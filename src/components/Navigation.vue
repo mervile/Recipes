@@ -22,6 +22,9 @@ export default {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    margin: 0px;
+    padding: 1em;
+    background-color: lavenderblush;
 }
 
 .navigation li {

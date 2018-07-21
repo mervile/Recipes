@@ -19,6 +19,8 @@
 <style>
 html, body {
     font-family: Arial, Helvetica, sans-serif;
+    margin: 0px;
+    padding: 0px;
 }
 
 *, *:before, *:after {
