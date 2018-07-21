@@ -1,17 +1,17 @@
 <template>
     <div class="main-content">
-        <recipes-header></recipes-header>
+        <navigation></navigation>
         <router-view></router-view>
     </div>
 </template>
 
 <script>
     import Vue from 'vue';
-    import RecipesHeader from './Header.vue';
+    import Navigation from './Navigation.vue';
 
     export default Vue.extend({
         components: {
-            RecipesHeader
+            Navigation
         }
     });
 </script>
