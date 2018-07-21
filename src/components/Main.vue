@@ -20,5 +20,14 @@
 html, body {
     font-family: Arial, Helvetica, sans-serif;
 }
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+select, input, button {
+    margin: 1em;
+    padding: 1em 0.5em;
+}
 </style>
 

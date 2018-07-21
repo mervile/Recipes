@@ -1,7 +1,7 @@
 <template>
     <ul class="navigation">
         <router-link v-for="route in routes" :key="route.id" tag="li" :to="route.path">
-            <a>{{ route.name }}</a>
+            <a>{{ $t(route.name) }}</a>
         </router-link>
     </ul>
 </template>

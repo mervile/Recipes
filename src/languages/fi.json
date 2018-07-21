@@ -1,0 +1,27 @@
+{
+    "recipes": "Reseptit",
+    "createRecipe": "Uusi resepti",
+    "map": "Kartta",
+    "searchText": "Hakusana",
+    "search": "Hae",
+    "recipeTypes": {
+        "recipeType": "Tyyppi",
+        "snack": "Välipala",
+        "meal": "Lounas/Päivällinen",
+        "dessert": "Jälkiruoka"
+    },
+    "mainIngredients": {
+        "mainIngredient": "Pääraaka-aine",
+        "fish": "Kala",
+        "bird": "Lintu",
+        "meat": "Liha",
+        "vegetable": "Kasvis"
+    },
+    "seasons": {
+        "season": "Kausi",
+        "summer": "Kesä",
+        "fall": "Syksy",
+        "winter": "Talvi",
+        "spring": "Kevät"
+    }
+}
