@@ -4,9 +4,7 @@ import * as fi from './languages/fi.json';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueI18n from 'vue-i18n'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 import RecipesMain from './components/Main.vue';
 
@@ -17,8 +15,6 @@ import EditRecipe from './components/EditRecipe.vue';
 Vue.use(VueRouter);
 Vue.use(VueI18n);
 
-library.add(faChevronRight);
-library.add(faChevronLeft);
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 const filterOptions: Object = {

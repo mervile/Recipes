@@ -25,6 +25,8 @@ html, body {
 
 *, *:before, *:after {
   box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
 }
 
 select, input, button {

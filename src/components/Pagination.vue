@@ -8,22 +8,38 @@
     </div>
 </template>
 
-<script>// TODO lang="ts"?
+<script lang="ts">
 import Vue from 'vue'
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { PagingOptions } from '../services/RecipeService';
+
+library.add(faChevronRight);
+library.add(faChevronLeft);
 
 export default Vue.extend({
+    props: {
+        total: Number
+    },
     data () {
         return {
             page: 1,
-            pages: 12
+            itemsPerPage: 10
+        }
+    },
+    computed: {
+        pages: function() {
+            return Math.ceil(this.total / this.itemsPerPage);
         }
     },
     methods: {
         next () {
             this.page++;
+            this.$emit('paging-update', {page: this.page-1, itemsPerPage: this.itemsPerPage});
         },
         prev () {
             this.page--;
+            this.$emit('paging-update', {page: this.page-1, itemsPerPage: this.itemsPerPage});
         }
     }
 });
