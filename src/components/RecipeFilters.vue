@@ -35,6 +35,12 @@
         methods: {
             search () {
                 console.log('Search...', this.searchText, this.recipeType, this.mainIngredient, this.season);
+                this.$emit('filter-recipes', {
+                    searchText: this.searchText,
+                    recipeType: this.recipeType,
+                    mainIngredient: this.mainIngredient,
+                    season: this.season
+                });
             }
         }
     });
