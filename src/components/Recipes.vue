@@ -1,8 +1,8 @@
 <template>
     <div class="recipes">
         <!-- v-bind tells Vue filter-options is an expression rather than string -->
-        <recipe-filters v-bind:filter-options="filterOptions" v-on:filter-recipes="updateFilters"></recipe-filters>
-        <pagination v-bind:total="total" v-on:paging-update="updateRecipes"></pagination>
+        <recipe-filters></recipe-filters>
+        <pagination></pagination>
         <grid-list
             v-bind:items="recipes"
             v-bind:getImage="getImage"></grid-list>
@@ -14,9 +14,7 @@ import Vue from 'vue';
 import RecipeFilters from './RecipeFilters.vue';
 import Pagination from './Pagination.vue';
 import GridList from './GridList.vue';
-import {recipeService, Recipe, PagedResults, RecipeType, PagingOptions, RecipeFiltersInterface} from '../services/RecipeService';
-
-let recipes: Array<Recipe> = [];
+import {Recipe, RecipeType} from '../services/RecipeService';
 
 export default Vue.extend({
     components: {
@@ -24,28 +22,15 @@ export default Vue.extend({
         Pagination,
         GridList
     },
-    data () {
-        return {
-            recipes,
-            filterOptions: recipeService.getFilterOptions(),
-            total: 0,
-            filters: {}
+    computed: {
+        recipes: function() {
+            return this.$store.state.recipes;
         }
     },
     created () {
-        this.updateRecipes({page: 0, itemsPerPage: 10});
+        this.$store.dispatch('updateRecipes');
     },
     methods: {
-        updateRecipes (pagingOpts: PagingOptions) {
-            recipeService.getRecipes(pagingOpts, this.filters).then(result => {
-                this.recipes = result.items;
-                this.total = result.total;
-            });
-        },
-        updateFilters (filters: RecipeFiltersInterface) {
-            this.filters = filters;
-            this.updateRecipes({page: 0, itemsPerPage: 10});
-        },
         getImage (recipe: Recipe) {
             if (recipe.type === RecipeType.DESSERT) {
                 return 'cookie-bite';

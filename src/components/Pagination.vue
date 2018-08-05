@@ -12,34 +12,27 @@
 import Vue from 'vue'
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
-import { PagingOptions } from '../services/RecipeService';
 
 library.add(faChevronRight);
 library.add(faChevronLeft);
 
 export default Vue.extend({
-    props: {
-        total: Number
-    },
-    data () {
-        return {
-            page: 1,
-            itemsPerPage: 10
-        }
-    },
     computed: {
         pages: function() {
-            return Math.ceil(this.total / this.itemsPerPage);
+            return Math.ceil(this.$store.state.total / this.$store.state.pagingOptions.itemsPerPage);
+        },
+        page: function() {
+            return this.$store.state.pagingOptions.page + 1;
         }
     },
     methods: {
         next () {
-            this.page++;
-            this.$emit('paging-update', {page: this.page-1, itemsPerPage: this.itemsPerPage});
+            this.$store.commit('nextPage');
+            this.$store.dispatch('updateRecipes');
         },
         prev () {
-            this.page--;
-            this.$emit('paging-update', {page: this.page-1, itemsPerPage: this.itemsPerPage});
+            this.$store.commit('prevPage');
+            this.$store.dispatch('updateRecipes');
         }
     }
 });

@@ -1,7 +1,7 @@
 <template>
     <form class="searchFilters">
         <input type="text" v-model="searchText" v-bind:placeholder="$t('searchText')" />
-        <select v-model="recipeType">
+        <select v-model="type">
             <option v-for="type in filterOptions.recipeTypes" :key="type.id" v-bind:value="type.value">
                 {{ $t(type.name) }}</option>
         </select>
@@ -19,28 +19,54 @@
 
 <script>
     import Vue from 'vue';
+    import {recipeService} from '../services/RecipeService';
 
     export default Vue.extend({
-        props: {
-            filterOptions: Object
-        },
-        data () {
-            return {
-                searchText: "",
-                recipeType: "",
-                mainIngredient: "",
-                season: ""
-            }
+        computed: {
+            filterOptions: function() {
+                return recipeService.getFilterOptions()
+            },
+            searchText: {
+                get () {
+                    return this.$store.state.filters.searchText;
+                },
+                set (value) {
+                    this.$store.commit('searchText', value);
+                    this.search();
+                }
+            },
+            type: {
+                get () {
+                    return this.$store.state.filters.type;
+                },
+                set (value) {
+                    this.$store.commit('type', value);
+                    this.search();
+                }
+            },
+            mainIngredient: {
+                get () {
+                    return this.$store.state.filters.mainIngredient;
+                },
+                set (value) {
+                    this.$store.commit('mainIngredient', value);
+                    this.search();
+                }
+            },
+            season: {
+                get () {
+                    return this.$store.state.filters.season;
+                },
+                set (value) {
+                    this.$store.commit('season', value);
+                    this.search();
+                }
+            },
         },
         methods: {
             search () {
-                console.log('Search...', this.searchText, this.recipeType, this.mainIngredient, this.season);
-                this.$emit('filter-recipes', {
-                    searchText: this.searchText,
-                    recipeType: this.recipeType,
-                    mainIngredient: this.mainIngredient,
-                    season: this.season
-                });
+                this.$store.commit('setPage', 0);
+                this.$store.dispatch('updateRecipes');
             }
         }
     });

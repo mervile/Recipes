@@ -37,14 +37,15 @@ export interface PagingOptions {
 
 export interface PagedResults extends PagingOptions {
     items: Array<Recipe>,
-    total: number
+    total: number,
+    filters: RecipeFiltersInterface
 }
 
 export interface RecipeFiltersInterface {
-    searchText?: string,
-    season?: Season,
-    mainIngredient?: MainIngredient,
-    type?: RecipeType
+    searchText: string,
+    season: Season | string,
+    mainIngredient: MainIngredient | string,
+    type: RecipeType | string
 }
 
 export class RecipeService {
@@ -61,9 +62,9 @@ export class RecipeService {
                     const to = from + options.itemsPerPage;
                     const result = Object.assign(options, {
                         total: recipes.length,
+                        filters,
                         items: recipes.slice(from, to)
                     });
-                    console.log('result', result);
                     resolve(result);
                 } else {
                     reject(new Error('Error with recipes!'))
@@ -77,33 +78,36 @@ export class RecipeService {
         return {
             recipeTypes: [
                 { id: 0, value: "", name: 'recipeTypes.recipeType' },
-                { id: 1, value: "snack", name: "recipeTypes.snack" },
-                { id: 2, value: "meal", name: "recipeTypes.meal" },
-                { id: 3, value: "dessert", name: "recipeTypes.dessert" },
+                { id: 1, value: RecipeType.SNACK, name: "recipeTypes.snack" },
+                { id: 2, value: RecipeType.MEAL, name: "recipeTypes.meal" },
+                { id: 3, value: RecipeType.DESSERT, name: "recipeTypes.dessert" },
             ],
             mainIngredients: [
                 { id: 0, value: "", name: "mainIngredients.mainIngredient" },
-                { id: 1, value: "bird", name: "mainIngredients.bird" },
-                { id: 2, value: "fish", name: "mainIngredients.fish" },
-                { id: 3, value: "meat", name: "mainIngredients.meat" },
-                { id: 4, value: "vegetable", name: "mainIngredients.vegetable" },
+                { id: 1, value: MainIngredient.BIRD, name: "mainIngredients.bird" },
+                { id: 2, value: MainIngredient.FISH, name: "mainIngredients.fish" },
+                { id: 3, value: MainIngredient.MEAT, name: "mainIngredients.meat" },
+                { id: 4, value: MainIngredient.VEGETABLE, name: "mainIngredients.vegetable" },
             ],
             seasons: [
                 { id: 0, value: "", name: "seasons.season" },
-                { id: 1, value: "summer", name: "seasons.summer" },
-                { id: 2, value: "fall", name: "seasons.fall" },
-                { id: 3, value: "winter", name: "seasons.winter" },
-                { id: 4, value: "spring", name: "seasons.spring" },
+                { id: 1, value: Season.SUMMER, name: "seasons.summer" },
+                { id: 2, value: Season.FALL, name: "seasons.fall" },
+                { id: 3, value: Season.WINTER, name: "seasons.winter" },
+                { id: 4, value: Season.SPRING, name: "seasons.spring" },
             ]
         };
     }
 
     private filterRecipes(recipes: Array<Recipe>, filters: RecipeFiltersInterface) {
         return recipes.filter(recipe => {
-            return (!filters.searchText || JSON.stringify(recipe).match(filters.searchText) !== null)
-                && (!filters.mainIngredient || filters.mainIngredient === recipe.mainIngredient)
-                && (!filters.season || filters.season === recipe.season)
-                && (!filters.type || filters.type === recipe.type)
+            if ((filters.mainIngredient !== "" && filters.mainIngredient !== recipe.mainIngredient)
+                || (filters.searchText && JSON.stringify(recipe).match(filters.searchText) === null)
+                || (filters.season !== "" && filters.season !== recipe.season)
+                || (filters.type !== "" && filters.type !== recipe.type)) {
+                return false;
+            }
+            return true;
         });
     }
 
