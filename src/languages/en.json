@@ -4,6 +4,8 @@
     "map": "Map",
     "searchText": "Search text",
     "search": "Search",
+    "noResults": "No results",
+    "loading": "Loading...",
     "recipeTypes": {
         "recipeType": "Type",
         "snack": "Snack",

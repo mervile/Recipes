@@ -4,6 +4,8 @@
     "map": "Kartta",
     "searchText": "Hakusana",
     "search": "Hae",
+    "noResults": "Ei tuloksia",
+    "loading": "Ladataan...",
     "recipeTypes": {
         "recipeType": "Tyyppi",
         "snack": "Välipala",

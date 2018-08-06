@@ -19,7 +19,8 @@ library.add(faChevronLeft);
 export default Vue.extend({
     computed: {
         pages: function() {
-            return Math.ceil(this.$store.state.total / this.$store.state.pagingOptions.itemsPerPage);
+            const pages = Math.ceil(this.$store.state.total / this.$store.state.pagingOptions.itemsPerPage);
+            return pages > 0 ? pages : 1;
         },
         page: function() {
             return this.$store.state.pagingOptions.page + 1;

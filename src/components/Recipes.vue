@@ -3,6 +3,10 @@
         <!-- v-bind tells Vue filter-options is an expression rather than string -->
         <recipe-filters></recipe-filters>
         <pagination></pagination>
+        <div class="info-text">
+            <span class="no-results" v-if="!loading && recipes.length === 0">{{ $t('noResults') }}</span>
+            <span class="loading" v-if="loading">{{ $t('loading') }}</span>
+        </div>
         <grid-list
             v-bind:items="recipes"
             v-bind:getImage="getImage"></grid-list>
@@ -25,6 +29,9 @@ export default Vue.extend({
     computed: {
         recipes: function() {
             return this.$store.state.recipes;
+        },
+        loading () {
+            return this.$store.state.loading;
         }
     },
     created () {
@@ -40,3 +47,9 @@ export default Vue.extend({
     }
 });
 </script>
+
+<style scoped>
+.info-text {
+    text-align: center;
+}
+</style>

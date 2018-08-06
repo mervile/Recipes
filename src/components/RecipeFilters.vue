@@ -19,9 +19,16 @@
 
 <script>
     import Vue from 'vue';
+    import * as _ from 'lodash';
     import {recipeService} from '../services/RecipeService';
 
     export default Vue.extend({
+        created () {
+            this.debouncedSearch = _.debounce(this.search, 200);
+        },
+        beforeDestroy () {
+            this.debouncedSearch.cancel();
+        },
         computed: {
             filterOptions: function() {
                 return recipeService.getFilterOptions()
@@ -32,7 +39,7 @@
                 },
                 set (value) {
                     this.$store.commit('searchText', value);
-                    this.search();
+                    this.debouncedSearch();
                 }
             },
             type: {

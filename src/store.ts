@@ -9,6 +9,7 @@ const store = new Vuex.Store({
     state: {
         recipes: [],
         total: 0,
+        loading: false,
         pagingOptions: {
             page: 0,
             itemsPerPage: 10,
@@ -51,10 +52,15 @@ const store = new Vuex.Store({
         season (state, value) {
             state.filters.season = value;
         },
+        loading (state, value) {
+            state.loading = value;
+        }
     },
     actions: {
         updateRecipes ({commit, state}) {
+            commit('loading', true);
             recipeService.getRecipes(state.pagingOptions, state.filters).then(result => {
+                commit('loading', false);
                 commit('updateRecipes', result);
             });
         }
