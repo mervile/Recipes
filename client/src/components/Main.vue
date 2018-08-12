@@ -21,6 +21,13 @@ html, body {
     font-family: Arial, Helvetica, sans-serif;
     margin: 0px;
     padding: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+.main-content {
+    width: 100%;
+    height: calc(100% - 82px);
 }
 
 *, *:before, *:after {

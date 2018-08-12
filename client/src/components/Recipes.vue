@@ -4,7 +4,7 @@
         <recipe-filters></recipe-filters>
         <pagination></pagination>
         <div class="info-text">
-            <span class="no-results" v-if="!loading && recipes.length === 0">{{ $t('noResults') }}</span>
+            <span class="no-results" v-if="!loading && !error && recipes.length === 0">{{ $t('noResults') }}</span>
             <span class="loading" v-if="loading">{{ $t('loading') }}</span>
             <span class="error" v-if="!loading && error">{{ $t('error') }}</span>
         </div>
