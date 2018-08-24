@@ -26,5 +26,11 @@
         "fall": "Fall",
         "winter": "Winter",
         "spring": "Spring"
+    },
+    "marker": {
+        "setIngredient": "Mark ingredients of type...",
+        "blueberry": "Blueberry",
+        "lingonberry": "Lingonberry",
+        "mushroom": "Mushroom"
     }
 }

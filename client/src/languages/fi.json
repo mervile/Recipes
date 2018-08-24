@@ -26,5 +26,11 @@
         "fall": "Syksy",
         "winter": "Talvi",
         "spring": "Kevät"
+    },
+    "marker": {
+        "setIngredient": "Merkitse ainesosaa tyyppiä...",
+        "blueberry": "Mustikka",
+        "lingonberry": "Puolukka",
+        "mushroom": "Sieni"
     }
 }

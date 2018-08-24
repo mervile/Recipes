@@ -47,3 +47,9 @@ export interface RecipeFiltersInterface {
     mainIngredient: MainIngredient | string,
     type: RecipeType | string
 }
+
+export enum MarkerType {
+    BLUEBERRY,
+    LINGONBERRY,
+    MUSHROOM
+}
