@@ -18,8 +18,8 @@ export default Vue.extend({
     },
     methods: {
         onClick () {
-            this.button.active = !this.button.active;
-            this.$emit('value-changed', this.button);
+            this.$props.button.active = !this.$props.button.active;
+            this.$emit('value-changed', this.$props.button);
         }
     }
 });

@@ -4,7 +4,7 @@
         <toggle-button
             v-for="button in buttons" :key="button.id"
             v-bind:button="button"
-            v-bind:disabled="button.active"
+            v-bind:disabled="keepActive && button.active"
             v-bind:class="{active: button.active}"
             v-on:value-changed="onChange"></toggle-button>
     </div>
@@ -20,18 +20,19 @@ export default Vue.extend({
     },
     props: {
         label: String,
-        buttons: Array
+        buttons: Array,
+        keepActive: Boolean
     },
     methods: {
         onChange (data) {
             this.$props.buttons.forEach(button => {
                 if (button.value === data.value) {
-                    button.active = true;
+                    button.active = this.$props.keepActive ? true : data.active;
                 } else {
                     button.active = false;
                 }
             });
-            this.$emit('value-changed', data.value);
+            this.$emit('value-changed', data);
         }
     }
 });

@@ -9,31 +9,56 @@ import Point from 'ol/geom/Point.js';
 import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer.js';
 import VectorSource from 'ol/source/Vector.js';
 import Collection from 'ol/Collection.js';
+import GeoJSON from 'ol/format/GeoJSON';
+import {DragAndDrop, Select} from 'ol/interaction';
+import {click} from 'ol/events/condition.js';
 
 const blueberriesImg = require('../images/blueberries.png');
 const lingonberriesImg = require('../images/lingonberries.png');
 const mushroomsImg = require('../images/mushrooms.png');
 
 export class MapService {
-    map: Map;
+    _map: Map;
     collection: Collection;
+    _source: VectorSource;
+    format: GeoJSON;
+    _dragAndDropInteraction: DragAndDrop;
+    _selectInteraction: Select;
 
     constructor() {
+        this.format = new GeoJSON({featureProjection: 'EPSG:3857'});
+        this.collection = new Collection([], {});
+        this._source = new VectorSource({features: this.collection});
+        this._dragAndDropInteraction = new DragAndDrop({
+            source: this._source,
+            formatConstructors: [GeoJSON]
+        });
+
+        this._selectInteraction = new Select({
+            condition: click
+        });
+    
+        this.styleFn = this.styleFn.bind(this);
+    }
+
+    get selectInteraction() {
+        return this._selectInteraction;
+    }
+
+    get source(): VectorSource {
+        return this._source;
     }
 
     initMap() {
-        this.collection = new Collection([], {});
-        this.map = new Map({
+        this._map = new Map({
             target: 'map',
             layers: [
                 new TileLayer({
                     source: new OSM()
                 }),
                 new VectorLayer({
-                    style: function(feature: Feature) {
-                        return feature.get('style');
-                    },
-                    source: new VectorSource({features: this.collection})
+                    style: this.styleFn,
+                    source: this._source
                 })
             ],
             view: new View({
@@ -41,12 +66,25 @@ export class MapService {
                 zoom: 2
             })
         });
-        return this.map;
+
+        this._map.addInteraction(this._dragAndDropInteraction);
+        this._map.addInteraction(this._selectInteraction);
+
+        return this._map;
+    }
+
+    clearMap() {
+        this._source.clear();
+    }
+
+    getSourceJSON() {
+        const features = this._source.getFeatures();
+        const json = this.format.writeFeatures(features);
+        return 'data:text/json;charset=utf-8,' + json;
     }
 
     addMarker(e, marker) {
-        const iconFeature = new Feature(new Point(e.coordinate));
-        iconFeature.set('style', this.createStyle(marker, undefined));
+        const iconFeature = new Feature({geometry: new Point(e.coordinate), name: marker});
         this.collection.push(iconFeature);
     }
 
@@ -69,14 +107,21 @@ export class MapService {
         }
     }
 
-    createStyle(marker: MarkerType, img: any) {
+    setSelectedStyle(feature: Feature) {
+        const shadowStyle = new Style({
+            image: new Icon(/** @type {module:ol/style/Icon~Options} */ ({
+                src: this.getImageSource(feature.get('name')),
+                color: "black",
+                scale: 1.25
+            }))
+        });
+        feature.setStyle([shadowStyle, this.styleFn(feature)])
+    }
+
+    styleFn(feature: Feature) {
         return new Style({
             image: new Icon(/** @type {module:ol/style/Icon~Options} */ ({
-                anchor: [0.5, 0.96],
-                crossOrigin: 'anonymous',
-                src: this.getImageSource(marker),
-                img,
-                imgSize: img ? [img.width, img.height] : undefined
+                src: this.getImageSource(feature.get('name'))
             }))
         });
     }
@@ -84,7 +129,7 @@ export class MapService {
     navigateToUser() {
         navigator.geolocation.getCurrentPosition((pos: any) => {
             const coords = fromLonLat([pos.coords.longitude, pos.coords.latitude]);
-            this.map.getView().animate({center: coords, zoom: 12});
+            this._map.getView().animate({center: coords, zoom: 12});
         });
     }
 }

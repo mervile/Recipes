@@ -32,5 +32,7 @@
         "blueberry": "Mustikka",
         "lingonberry": "Puolukka",
         "mushroom": "Sieni"
-    }
+    },
+    "clearMap": "Tyhjennä",
+    "downloadMap": "Lataa kartta"
 }

@@ -24,6 +24,7 @@ export default {
     flex-wrap: wrap;
     padding: 1em;
     background-color: lavenderblush;
+    border-bottom: 1px solid pink;
 }
 
 .navigation li {
