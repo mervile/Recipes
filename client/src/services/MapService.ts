@@ -77,15 +77,30 @@ export class MapService {
         this._source.clear();
     }
 
+    addMarker(e, marker) {
+        const iconFeature = new Feature({
+            geometry: new Point(e.coordinate),
+            name: marker,
+        });
+        iconFeature.setId('marker-' + Date.now());
+        this.collection.push(iconFeature);
+    }
+
+    removeMarkers(markers: Feature[]) {
+        this.selectInteraction.getFeatures().clear();
+        markers.forEach((feature) => {this.collection.remove(feature)});
+    }
+
+    moveMarkers(event: any, markers: Feature[]) {
+        markers.forEach((marker: Feature) => {
+            marker.getGeometry().setCoordinates(event.coordinate)
+        });
+    }
+
     getSourceJSON() {
         const features = this._source.getFeatures();
         const json = this.format.writeFeatures(features);
         return 'data:text/json;charset=utf-8,' + json;
-    }
-
-    addMarker(e, marker) {
-        const iconFeature = new Feature({geometry: new Point(e.coordinate), name: marker});
-        this.collection.push(iconFeature);
     }
 
     getMarkers() {

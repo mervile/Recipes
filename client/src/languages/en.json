@@ -31,8 +31,11 @@
         "setIngredient": "Mark ingredients of type...",
         "blueberry": "Blueberry",
         "lingonberry": "Lingonberry",
-        "mushroom": "Mushroom"
+        "mushroom": "Mushroom",
+        "selectAction": "Select action..."
     },
     "clearMap": "Clear all",
+    "remove": "Remove",
+    "move": "Move",
     "downloadMap": "Download"
 }

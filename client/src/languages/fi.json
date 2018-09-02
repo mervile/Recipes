@@ -31,8 +31,11 @@
         "setIngredient": "Merkitse ainesosaa tyyppiä...",
         "blueberry": "Mustikka",
         "lingonberry": "Puolukka",
-        "mushroom": "Sieni"
+        "mushroom": "Sieni",
+        "selectAction": "Valitse toiminto..."
     },
+    "remove": "Poista",
+    "move": "Siirrä",
     "clearMap": "Tyhjennä",
-    "downloadMap": "Lataa kartta"
+    "downloadMap": "Lataa merkinnät"
 }

@@ -8,6 +8,15 @@
                 label="marker.setIngredient"
                 v-bind:buttons="markers"></toggle-buttons>
 
+            <div class="selected-actions" v-if="selected.length > 0">
+                <toggle-buttons
+                    v-on:value-changed="setActiveSelectedAction"
+                    v-bind:keep-active="false"
+                    label="marker.selectAction"
+                    v-bind:buttons="selectedActions"></toggle-buttons>
+                <button class="map-action" v-on:click.stop.prevent="removeSelected">{{ $t('remove') }}</button>
+            </div>
+
             <div class="map-actions">
                 <a class="map-action" v-on:click.stop.prevent="clearMap">{{ $t('clearMap') }}</a>
                 <a class="map-action" v-bind:href="sourceJSON" download="features.json">{{ $t('downloadMap') }}</a>
@@ -22,6 +31,8 @@ import 'ol/ol.css';
 import ToggleButtons from './ToggleButtons.vue';
 import {MarkerType} from '../../../common/models';
 import {mapService} from '../services/MapService';
+import * as _ from 'lodash';
+import Feature from 'ol/Feature.js';
 
 export default Vue.extend({
     components: {
@@ -35,6 +46,9 @@ export default Vue.extend({
         map.on('click', (e: any) => {
             if (this.marker !== null) {
                 mapService.addMarker(e, this.marker);
+            } else if (this.selectedAction === 'move') {
+                mapService.moveMarkers(e, this.selected);
+                this.selected = [];
             }
         });
 
@@ -45,9 +59,11 @@ export default Vue.extend({
         mapService.selectInteraction.on('select', (e) => {
             e.selected.forEach((feature) => {
                 mapService.setSelectedStyle(feature);
+                this.selected.push(feature);
             });
             e.deselected.forEach((feature) => {
                 feature.setStyle(mapService.styleFn);
+                this.selected = _.remove(this.selected, (f: Feature) => f.getId() !== feature.getId());
             });
         });
     },
@@ -55,15 +71,27 @@ export default Vue.extend({
         return {
             marker: MarkerType.BLUEBERRY,
             markers: mapService.getMarkers(),
-            sourceJSON: ''
+            sourceJSON: '',
+            selected: <Feature[]>[],
+            selectedActions: [
+                { id: 'move', label: 'move', active: false, value: 'move' }
+            ],
+            selectedAction: null
         }
     },
     methods: {
-        setActiveMarker (marker) {
+        setActiveMarker(marker) {
             this.marker = marker.active ? marker.value : null;
+        },
+        setActiveSelectedAction(action) {
+            this.selectedAction = action.value;
         },
         clearMap() {
             mapService.clearMap();
+        },
+        removeSelected() {
+            mapService.removeMarkers(this.selected);
+            this.selected = [];
         }
     }
 });
@@ -101,5 +129,11 @@ export default Vue.extend({
     margin: 5px;
     text-decoration: none;
     cursor: pointer;
+    margin: 1em 1px;
+}
+
+.selected-actions {
+    display: flex;
+    align-items: flex-end;
 }
 </style>
