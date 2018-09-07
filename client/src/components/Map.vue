@@ -48,7 +48,7 @@ export default Vue.extend({
                 mapService.addMarker(e, this.marker);
             } else if (this.selectedAction === 'move') {
                 mapService.moveMarkers(e, this.selected);
-                this.selected = [];
+                this.clearSelection();
             }
         });
 
@@ -86,7 +86,16 @@ export default Vue.extend({
         setActiveSelectedAction(action) {
             this.selectedAction = action.value;
         },
+        clearSelection() {
+            this.selected = [];
+            this.selectedAction = null;
+            this.selectedActions.forEach((action) => {
+                action.active = false
+            });
+        },
         clearMap() {
+            mapService.selectInteraction.getFeatures().clear();
+            this.clearSelection();
             mapService.clearMap();
         },
         removeSelected() {
