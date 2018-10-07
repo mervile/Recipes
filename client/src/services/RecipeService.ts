@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import {RecipeType, MainIngredient, Season,
+import {RecipeType, MainIngredient, Season, Unit,
     PagingOptions, RecipeFiltersInterface, PagedResults} from '../../../common/models';
 
 export class RecipeService {
@@ -45,6 +45,19 @@ export class RecipeService {
                 { id: 4, value: Season.SPRING, name: "seasons.spring" },
             ]
         };
+    }
+
+    public getUnitOptions() {
+        return [
+            { id: 0, value: "", name: "unit" },
+            { id: 1, value: Unit.ML, name: "units.ml" },
+            { id: 2, value: Unit.DL, name: "units.dl" },
+            { id: 3, value: Unit.L, name: "units.l" },
+            { id: 4, value: Unit.G, name: "units.g" },
+            { id: 5, value: Unit.KG, name: "units.kg" },
+            { id: 6, value: Unit.TBSP, name: "units.tbsp" },
+            { id: 7, value: Unit.TSP, name: "units.tsp" },
+        ]
     }
 }
 

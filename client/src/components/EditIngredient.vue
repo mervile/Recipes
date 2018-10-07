@@ -1,0 +1,66 @@
+<template>
+    <div class="ingredient">
+        <div class="container">
+            <label for="ingredient-name">{{ $t('name') }}</label>
+            <input name="ingredient-name" v-model="ingredient.name" required />
+        </div>
+
+        <div class="container">
+            <label for="ingredient-quantity">{{ $t('quantity') }}</label>
+            <input name="ingredient-quantity" type="number" v-model="ingredient.quantity" />
+        </div>
+
+        <div class="container">
+            <label for="ingredient-unit">{{ $t('unit') }}</label>
+            <select name="ingredient-unit" v-model="ingredient.unit">
+                <option v-for="unit in units" :key="unit.id" :value="ingredient.unit">
+                    {{ $t(unit.name) }}</option>
+            </select>
+        </div>
+
+        <button v-on:click.stop.prevent="removeIngredient()">
+            <font-awesome-icon class="fa-icon" icon="minus" />
+        </button>
+    </div>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+import {recipeService} from '../services/RecipeService';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faMinus } from '@fortawesome/free-solid-svg-icons'
+
+library.add(faMinus);
+
+export default Vue.extend({
+    props: {
+        ingredient: Object
+    },
+    data() {
+        return {
+            units: recipeService.getUnitOptions(),
+        }
+    },
+    methods: {
+        removeIngredient() {
+            this.$store.commit('removeIngredient', this.ingredient.id);
+        }
+    }
+});
+</script>
+
+<style scoped>
+.ingredient {
+    display: flex;
+    align-items: flex-end;
+}
+
+button {
+    padding: 0.5em;
+}
+
+.fa-icon {
+    width: 2em;
+    height: 2em;
+}
+</style>

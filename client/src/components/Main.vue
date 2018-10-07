@@ -16,29 +16,10 @@
     });
 </script>
 
-<style>
-html, body {
-    font-family: Arial, Helvetica, sans-serif;
-    margin: 0px;
-    padding: 0px;
-    width: 100%;
-    height: 100%;
-}
-
+<style scoped>
 .main-content {
     width: 100%;
     height: calc(100% - 82px);
-}
-
-*, *:before, *:after {
-  box-sizing: border-box;
-  margin: 0px;
-  padding: 0px;
-}
-
-select, input, button {
-    margin: 1em;
-    padding: 1em 0.5em;
 }
 </style>
 

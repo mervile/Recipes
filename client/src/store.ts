@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import * as _ from 'lodash';
 
 import {recipeService} from './services/RecipeService';
 
@@ -22,6 +23,19 @@ const store = new Vuex.Store({
             season: '',
             mainIngredient: '',
             type: ''
+        },
+        recipe: {
+            name: '',
+            type: '',
+            season: '',
+            mainIngredient: '',
+            ingredients: [{
+                id: Date.now().toString(),
+                name: '',
+                quantity: '',
+                unit: ''
+            }],
+            instructions: ''
         },
     },
     mutations: {
@@ -58,6 +72,13 @@ const store = new Vuex.Store({
         },
         error (state, value) {
             state.error = value;
+        },
+        addIngredient(state, value) {
+            state.recipe.ingredients.push(value);
+        },
+        removeIngredient(state, value) {
+            const index = _.findIndex(state.recipe.ingredients, ingr => ingr.id === value);
+            state.recipe.ingredients.splice(index, 1);
         }
     },
     actions: {

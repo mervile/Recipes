@@ -7,6 +7,11 @@
     "noResults": "No results",
     "loading": "Loading...",
     "error": "Error fetching recipes!",
+    "name": "Name",
+    "quantity": "Quantity",
+    "unit": "Unit",
+    "ingredients": "Ingredients",
+    "instructions": "Instructions",
     "recipeTypes": {
         "recipeType": "Type",
         "snack": "Snack",
@@ -33,6 +38,15 @@
         "lingonberry": "Lingonberry",
         "mushroom": "Mushroom",
         "selectAction": "Select action..."
+    },
+    "units": {
+        "ml": "ml",
+        "dl": "dl",
+        "l": "l",
+        "g": "g",
+        "kg": "kg",
+        "tbsp": "tbsp",
+        "tsp": "tsp"
     },
     "clearMap": "Clear all",
     "remove": "Remove",

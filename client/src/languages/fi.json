@@ -7,6 +7,11 @@
     "noResults": "Ei tuloksia",
     "loading": "Ladataan...",
     "error": "Reseptien haku epäonnistui!",
+    "name": "Nimi",
+    "quantity": "Määrä",
+    "unit": "Yksikkö",
+    "ingredients": "Ainesosat",
+    "instructions": "Ohjeet",
     "recipeTypes": {
         "recipeType": "Tyyppi",
         "snack": "Välipala",
@@ -33,6 +38,15 @@
         "lingonberry": "Puolukka",
         "mushroom": "Sieni",
         "selectAction": "Valitse toiminto..."
+    },
+    "units": {
+        "ml": "ml",
+        "dl": "dl",
+        "l": "l",
+        "g": "g",
+        "kg": "kg",
+        "tbsp": "ruokalusikkaa",
+        "tsp": "teelusikkaa"
     },
     "remove": "Poista",
     "move": "Siirrä",
