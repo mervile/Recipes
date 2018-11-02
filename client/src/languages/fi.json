@@ -12,6 +12,8 @@
     "unit": "Yksikkö",
     "ingredients": "Ainesosat",
     "instructions": "Ohjeet",
+    "image": "Kuva",
+    "basicInfo": "Perustiedot",
     "recipeTypes": {
         "recipeType": "Tyyppi",
         "snack": "Välipala",

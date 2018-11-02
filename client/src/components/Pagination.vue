@@ -1,9 +1,9 @@
 <template>
     <div>
-        <button v-bind:disabled="page === 1" v-on:click="prev()">
+        <button class="image-button" v-bind:disabled="page === 1" v-on:click="prev()">
             <font-awesome-icon icon="chevron-left" /></button>
         {{ page }} / {{ pages }}
-        <button v-bind:disabled="page === pages" v-on:click="next()">
+        <button class="image-button" v-bind:disabled="page === pages" v-on:click="next()">
             <font-awesome-icon icon="chevron-right" /></button>
     </div>
 </template>

@@ -16,20 +16,29 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .navigation {
     list-style: none;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     padding: 1em;
-    background-color: lavenderblush;
+    background-image: linear-gradient(white, lavenderblush);
     border-bottom: 1px solid pink;
 }
 
 .navigation li {
     margin: 1.0em;
     text-transform: uppercase;
+}
+
+.navigation li a {
+    color: brown;
+    text-decoration: none;
+}
+
+.router-link-active {
+    font-weight: bolder;
 }
 
 @media screen and (max-width: 500px) {

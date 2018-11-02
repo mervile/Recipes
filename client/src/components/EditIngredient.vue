@@ -1,24 +1,24 @@
 <template>
     <div class="ingredient">
         <div class="container">
-            <label for="ingredient-name">{{ $t('name') }}</label>
+            <label v-if="showLabel" for="ingredient-name">{{ $t('name') }}</label>
             <input name="ingredient-name" v-model="ingredient.name" required />
         </div>
 
         <div class="container">
-            <label for="ingredient-quantity">{{ $t('quantity') }}</label>
+            <label v-if="showLabel" for="ingredient-quantity">{{ $t('quantity') }}</label>
             <input name="ingredient-quantity" type="number" v-model="ingredient.quantity" />
         </div>
 
         <div class="container">
-            <label for="ingredient-unit">{{ $t('unit') }}</label>
+            <label v-if="showLabel" for="ingredient-unit">{{ $t('unit') }}</label>
             <select name="ingredient-unit" v-model="ingredient.unit">
                 <option v-for="unit in units" :key="unit.id" :value="ingredient.unit">
                     {{ $t(unit.name) }}</option>
             </select>
         </div>
 
-        <button v-on:click.stop.prevent="removeIngredient()">
+        <button class="image-button" v-on:click.stop.prevent="removeIngredient()">
             <font-awesome-icon class="fa-icon" icon="minus" />
         </button>
     </div>
@@ -34,7 +34,8 @@ library.add(faMinus);
 
 export default Vue.extend({
     props: {
-        ingredient: Object
+        ingredient: Object,
+        showLabel: Boolean
     },
     data() {
         return {
@@ -52,7 +53,6 @@ export default Vue.extend({
 <style scoped>
 .ingredient {
     display: flex;
-    align-items: flex-end;
 }
 
 button {

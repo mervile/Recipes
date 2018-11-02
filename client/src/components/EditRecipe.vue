@@ -1,63 +1,80 @@
 <template>
-    <div>
+    <div class="col">
         <header>
             <h1>{{ $t(recipeViewTitle) }}</h1>
         </header>
 
         <form>
-            <section class="filter-attributes">
-                <div class="container">
-                    <label for="name">{{ $t('name') }}</label>
+            <div>
+                <section class="filter-attributes">
+                    <h3>{{ $t('basicInfo') }}</h3>
 
-                    <input name="name" v-model="recipe.name" required />
-                </div>
+                    <div class="container">
+                        <label for="name">{{ $t('name') }}</label>
 
-                <div class="container">
-                    <label for="type">{{ $t('recipeTypes.recipeType') }}</label>
+                        <input name="name" v-model="recipe.name" required />
+                    </div>
 
-                    <select v-model="recipe.type" name="type">
-                        <option v-for="type in filterOptions.recipeTypes" :key="type.id" v-bind:value="type.value">
-                            {{ $t(type.name) }}</option>
-                    </select>
-                </div>
+                    <div class="container">
+                        <label for="type">{{ $t('recipeTypes.recipeType') }}</label>
 
-                <div class="container">
-                    <label for="mainIngredient">{{ $t('mainIngredients.mainIngredient') }}</label>
+                        <select v-model="recipe.type" name="type">
+                            <option v-for="type in filterOptions.recipeTypes" :key="type.id" v-bind:value="type.value">
+                                {{ $t(type.name) }}</option>
+                        </select>
+                    </div>
 
-                    <select v-model="recipe.mainIngredient" name="mainIngredient">
-                        <option v-for="ingredient in filterOptions.mainIngredients" :key="ingredient.id" v-bind:value="ingredient.value">
-                            {{ $t(ingredient.name) }}</option>
-                    </select>
-                </div>
+                    <div class="container">
+                        <label for="mainIngredient">{{ $t('mainIngredients.mainIngredient') }}</label>
 
-                <div class="container">
-                    <label for="season">{{ $t('seasons.season') }}</label>
+                        <select v-model="recipe.mainIngredient" name="mainIngredient">
+                            <option v-for="ingredient in filterOptions.mainIngredients" :key="ingredient.id" v-bind:value="ingredient.value">
+                                {{ $t(ingredient.name) }}</option>
+                        </select>
+                    </div>
 
-                    <select v-model="recipe.season" name="season">
-                        <option v-for="season in filterOptions.seasons" :key="season.id" v-bind:value="season.value">
-                            {{ $t(season.name) }}</option>
-                    </select>
-                </div>
-            </section>
+                    <div class="container">
+                        <label for="season">{{ $t('seasons.season') }}</label>
 
-            <section>
-                <h2>{{ $t('ingredients') }}</h2>
+                        <select v-model="recipe.season" name="season">
+                            <option v-for="season in filterOptions.seasons" :key="season.id" v-bind:value="season.value">
+                                {{ $t(season.name) }}</option>
+                        </select>
+                    </div>
+                </section>
 
-                <edit-ingredient 
-                    v-for="ingredient in recipe.ingredients"
-                    :key="ingredient.id"
-                    :ingredient="ingredient"></edit-ingredient>
+                <section>
+                    <h3>{{ $t('ingredients') }}</h3>
 
-                <button v-on:click.stop.prevent="addIngredient()">
-                    <font-awesome-icon class="fa-icon" icon="plus-square" />
-                </button>
-            </section>
+                    <edit-ingredient 
+                        v-for="(ingredient, index) in recipe.ingredients"
+                        :key="ingredient.id"
+                        :show-label="index === 0"
+                        :ingredient="ingredient"></edit-ingredient>
 
-            <section>
-                <h2>{{ $t('instructions') }}</h2>
+                    <button class="image-button" v-on:click.stop.prevent="addIngredient()">
+                        <font-awesome-icon class="fa-icon" icon="plus" />
+                    </button>
+                </section>
+            </div>
 
-                <textarea cols="100" rows="10" />
-            </section>
+            <div class="col">
+                <section class="image">
+                    <h3>{{ $t('image') }}</h3>
+                    <input type="file"
+                        id="recipe-result-image"
+                        name="recipe-result-image"
+                        @change="handleFile"
+                        accept="image/png, image/jpeg" />
+                    <img :src="image" />
+                </section>
+
+                <section>
+                    <h3>{{ $t('instructions') }}</h3>
+
+                    <textarea rows="10" v-model="recipe.instructions" />
+                </section>
+            </div>
         </form>
 
         <footer></footer>
@@ -69,9 +86,9 @@ import Vue from 'vue';
 import {recipeService} from '../services/RecipeService';
 import EditIngredient from './EditIngredient.vue';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faPlusSquare } from '@fortawesome/free-solid-svg-icons'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faPlusSquare);
+library.add(faPlus);
 
 export default Vue.extend({
     components: {
@@ -82,6 +99,7 @@ export default Vue.extend({
             recipeViewTitle: 'createRecipe', // isEdit ? ..
             recipe: this.$store.state.recipe,
             filterOptions: recipeService.getFilterOptions(),
+            image: ''
         }
     },
     methods: {
@@ -92,6 +110,22 @@ export default Vue.extend({
                     quantity: '',
                     unit: ''
             });
+        },
+        handleFile(e) {
+            var files = e.target.files || e.dataTransfer.files;
+            if (!files.length)
+                return;
+            this.createImage(files[0]);
+        },
+        createImage(file) {
+            const image = new Image();
+            const reader = new FileReader();
+            const vm = this;
+
+            reader.onload = (e) => {
+                vm.image = e.target && e.target.result;
+            };
+            reader.readAsDataURL(file);
         }
     }
 });
@@ -100,14 +134,55 @@ export default Vue.extend({
 <style scoped>
 header {
     padding: 1em;
-    box-shadow: 0px 0px 2px grey;
 }
+
+header h1 {
+    color: brown;
+    text-transform: uppercase;
+}
+
+.col {
+    flex: 1;
+}
+
 section {
-    padding: 1em 0;
+    padding: 1.5em 0.5em 0.5em 1em;
+    box-shadow: 1px 1px 0px 0px grey;
+    margin: 2.5em 1em;
+    position: relative;
+    border: 1px solid brown;
+}
+
+.image {
+    display: flex;
+    flex-direction: column;
+}
+
+.image img {
+    max-width: 100px;
+    max-height: 100px;
+}
+
+form .image input {
+    margin: 0;
 }
 
 form {
-    padding: 1em;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+form h3 {
+    padding: 0 1em;
+    position: absolute;
+    top: -0.8em;
+    background-image: linear-gradient(white, mistyrose);
+    color: brown;
+    border: 1px solid pink;
+}
+
+form textarea {
+    width: 100%;
 }
 
 .fa-icon {
@@ -122,4 +197,5 @@ form {
 h2 {
     padding-bottom: 1em;
 }
+
 </style>

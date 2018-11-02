@@ -85,6 +85,10 @@
         border-bottom: 1px dotted;
     }
 
+    select, input, button {
+        margin: 1em;
+    }
+
     .searchFilters button {
         min-width: 80px;
     }

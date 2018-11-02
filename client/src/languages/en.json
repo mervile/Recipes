@@ -12,6 +12,8 @@
     "unit": "Unit",
     "ingredients": "Ingredients",
     "instructions": "Instructions",
+    "image": "Image",
+    "basicInfo": "Basic information",
     "recipeTypes": {
         "recipeType": "Type",
         "snack": "Snack",
