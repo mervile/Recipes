@@ -23,8 +23,8 @@ export default {
     justify-content: center;
     flex-wrap: wrap;
     padding: 1em;
-    background-image: linear-gradient(white, lavenderblush);
-    border-bottom: 1px solid pink;
+    background-image: linear-gradient(white, var(--content-background-color));
+    border-bottom: 1px solid var(--content-color);
 }
 
 .navigation li {
@@ -33,7 +33,7 @@ export default {
 }
 
 .navigation li a {
-    color: brown;
+    color: var(--content-color);
     text-decoration: none;
 }
 

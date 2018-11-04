@@ -35,9 +35,4 @@ export default Vue.extend({
     align-items: center;
     padding: 1em;
 }
-
-.fa-icon {
-    width: 3em;
-    height: 3em;
-}
 </style>

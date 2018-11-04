@@ -1,0 +1,13 @@
+form select, form input {
+    padding: 1em 0.5em;
+    margin: 1em;
+}
+
+form .container {
+    display: flex;
+    flex-direction: column;
+}
+
+form .container select, form .container input {
+    margin: 3px 1em 1em 0;
+}

@@ -13,7 +13,7 @@
             <option v-for="season in filterOptions.seasons" :key="season.id" v-bind:value="season.value">
                 {{ $t(season.name) }}</option>
         </select>
-        <button v-on:click="search">{{ $t('search') }}</button>
+        <button class="action-button" v-on:click="search">{{ $t('search') }}</button>
     </form>
 </template>
 
@@ -79,14 +79,9 @@
     });
 </script>
 
-<style>
+<style scoped>
     .searchFilters {
-        border-top: 1px dotted;
-        border-bottom: 1px dotted;
-    }
-
-    select, input, button {
-        margin: 1em;
+        border-bottom: 1px solid var(--content-color);
     }
 
     .searchFilters button {

@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import './main.css';
+import './styles/main.css';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 import router from './routes';

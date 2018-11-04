@@ -53,14 +53,13 @@ export default Vue.extend({
 <style scoped>
 .ingredient {
     display: flex;
+    flex-wrap: wrap;
 }
 
-button {
-    padding: 0.5em;
-}
-
-.fa-icon {
-    width: 2em;
-    height: 2em;
+@media screen and (max-width: 500px) {
+    .ingredient {
+        flex-direction: column;
+        flex-wrap: nowrap;
+    }
 }
 </style>

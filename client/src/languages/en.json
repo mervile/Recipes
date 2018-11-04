@@ -14,6 +14,7 @@
     "instructions": "Instructions",
     "image": "Image",
     "basicInfo": "Basic information",
+    "save": "Save",
     "recipeTypes": {
         "recipeType": "Type",
         "snack": "Snack",
