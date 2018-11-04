@@ -53,6 +53,14 @@ export default Vue.extend({
 <style scoped>
 .ingredient {
     display: flex;
+    flex-wrap: wrap;
+}
+
+@media screen and (max-width: 500px) {
+    .ingredient {
+        flex-direction: column;
+        flex-wrap: nowrap;
+    }
 }
 
 button {

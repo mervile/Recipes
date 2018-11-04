@@ -56,6 +56,12 @@
                         <font-awesome-icon class="fa-icon" icon="plus" />
                     </button>
                 </section>
+
+                <section>
+                    <h3>{{ $t('instructions') }}</h3>
+
+                    <textarea rows="10" v-model="recipe.instructions" />
+                </section>
             </div>
 
             <div class="col">
@@ -66,18 +72,15 @@
                         name="recipe-result-image"
                         @change="handleFile"
                         accept="image/png, image/jpeg" />
-                    <img :src="image" />
-                </section>
-
-                <section>
-                    <h3>{{ $t('instructions') }}</h3>
-
-                    <textarea rows="10" v-model="recipe.instructions" />
+                    <img v-if="image" :src="image" />
+                    <font-awesome-icon v-if="!image" class="fa-icon placeholder" :icon="'utensils'" />
                 </section>
             </div>
         </form>
 
-        <footer></footer>
+        <footer>
+            <button type="submit">{{ $t('save') }}</button>
+        </footer>
     </div>
 </template>
 
@@ -137,7 +140,7 @@ header {
 }
 
 header h1 {
-    color: brown;
+    color: var(--content-color);
     text-transform: uppercase;
 }
 
@@ -150,7 +153,8 @@ section {
     box-shadow: 1px 1px 0px 0px grey;
     margin: 2.5em 1em;
     position: relative;
-    border: 1px solid brown;
+    border: 1px solid var(--content-color);
+    background-color: white;
 }
 
 .image {
@@ -158,9 +162,9 @@ section {
     flex-direction: column;
 }
 
-.image img {
-    max-width: 100px;
-    max-height: 100px;
+.image img, .fa-icon.placeholder {
+    width: 200px;
+    height: 200px;
 }
 
 form .image input {
@@ -176,9 +180,9 @@ form h3 {
     padding: 0 1em;
     position: absolute;
     top: -0.8em;
-    background-image: linear-gradient(white, mistyrose);
-    color: brown;
-    border: 1px solid pink;
+    background-image: linear-gradient(white, var(--main-background-color));
+    color: var(--content-color);
+    border: 1px solid var(--content-color);
 }
 
 form textarea {
@@ -192,10 +196,29 @@ form textarea {
 
 .filter-attributes {
     display: flex;
+    flex-wrap: wrap;
+}
+
+@media screen and (max-width: 744px) {
+    .filter-attributes, form {
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .filter-attributes, form {
+        flex-wrap: nowrap;
+    }
 }
 
 h2 {
     padding-bottom: 1em;
 }
 
+footer {
+    display: flex;
+    justify-content: flex-end;
+    background-image: linear-gradient(var(--content-background-color), white);
+    border-top: 1px solid var(--content-color);
+}
 </style>

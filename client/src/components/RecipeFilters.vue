@@ -81,8 +81,7 @@
 
 <style>
     .searchFilters {
-        border-top: 1px dotted;
-        border-bottom: 1px dotted;
+        border-bottom: 1px solid var(--content-color);
     }
 
     select, input, button {

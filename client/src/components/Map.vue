@@ -106,10 +106,12 @@ export default Vue.extend({
 });
 </script>
 
-<style>
+<style scoped>
 .map {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 84px;
+    bottom: 0px;
 }
 
 #map {
@@ -125,9 +127,26 @@ export default Vue.extend({
     border: 1px solid darkgray;
     padding: 1em;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     width: 100%;
+}
+
+@media screen and (max-width: 500px) {
+    .map {
+        top: 185px;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .controls {
+        flex-direction: column;
+    }
+}
+
+.map-actions {
+    margin: 1em;
 }
 
 .map-action {
@@ -135,7 +154,6 @@ export default Vue.extend({
     background-color: darkgreen;
     color: white;
     text-transform: uppercase;
-    margin: 5px;
     text-decoration: none;
     cursor: pointer;
     margin: 1em 1px;
