@@ -1,9 +1,8 @@
 <template>
     <div class="grid-item">
-        <h3>{{ title }}</h3>
-        <div class="image-placeholder">
-            <font-awesome-icon class="fa-icon" v-bind:icon="placeholderImage" />
-        </div>
+        <h3>{{ item.name }}</h3>
+        <font-awesome-icon v-if="!item.image" class="fa-icon" v-bind:icon="placeholderImage" />
+        <img v-if="item.image" :src="item.image" />
         <div class="controls"></div>
     </div>
 </template>
@@ -19,7 +18,7 @@ library.add(faUtensils);
 export default Vue.extend({
     props: {
         placeholderImage: String,
-        title: String
+        item: Object
     }
 });
 </script>
@@ -34,5 +33,10 @@ export default Vue.extend({
     justify-content: space-between;
     align-items: center;
     padding: 1em;
+}
+
+img {
+    max-width: 150px;
+    max-height: 150px;
 }
 </style>

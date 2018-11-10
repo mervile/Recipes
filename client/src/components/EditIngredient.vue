@@ -1,7 +1,7 @@
 <template>
     <div class="ingredient">
         <div class="container">
-            <label v-if="showLabel" for="ingredient-name">{{ $t('name') }}</label>
+            <label v-if="showLabel" for="ingredient-name"><span class="required">*</span>{{ $t('name') }}</label>
             <input name="ingredient-name" v-model="ingredient.name" required />
         </div>
 
@@ -13,7 +13,7 @@
         <div class="container">
             <label v-if="showLabel" for="ingredient-unit">{{ $t('unit') }}</label>
             <select name="ingredient-unit" v-model="ingredient.unit">
-                <option v-for="unit in units" :key="unit.id" :value="ingredient.unit">
+                <option v-for="unit in units" :key="unit.id" :value="unit.value">
                     {{ $t(unit.name) }}</option>
             </select>
         </div>

@@ -35,7 +35,8 @@ const store = new Vuex.Store({
                 quantity: '',
                 unit: ''
             }],
-            instructions: ''
+            instructions: '',
+            image: ''
         },
     },
     mutations: {

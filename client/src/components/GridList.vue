@@ -2,8 +2,8 @@
     <div>
         <grid-item
             v-for="item in items" :key="item.id"
-            v-bind:placeholder-image="getImage(item)"
-            v-bind:title="item.name"></grid-item>
+            :placeholder-image="getImage(item)"
+            :item="item"></grid-item>
     </div>
 </template>
 

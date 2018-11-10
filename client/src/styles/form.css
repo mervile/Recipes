@@ -1,6 +1,11 @@
 form select, form input {
     padding: 1em 0.5em;
     margin: 1em;
+
+    /* required to properly style form 
+   elements on WebKit based browsers */
+  -webkit-appearance: none;
+  
 }
 
 form .container {
@@ -10,4 +15,17 @@ form .container {
 
 form .container select, form .container input {
     margin: 3px 1em 1em 0;
+    min-width: 150px;
+}
+
+input:invalid, select:invalid {
+    border-top: 2px solid red;
+}
+
+input:focus:invalid {
+    outline: none;
+}
+
+.required {
+    color: red;
 }

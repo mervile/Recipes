@@ -68,7 +68,11 @@ export default function recipeRoutes(app, db) {
     });
 
     app.post('/recipes', (req, res) => {
-        res.send('To be implemented..')
+        const recipe = req.body;
+        recipe.id = _.last(recipes).id + 1;
+        recipe.datetime = Date.now();
+        recipes.push(recipe);
+        res.send(recipe);
     });
 
     app.get('/recipes', (req, res) => {

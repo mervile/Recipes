@@ -10,24 +10,24 @@
                     <h3>{{ $t('basicInfo') }}</h3>
 
                     <div class="container">
-                        <label for="name">{{ $t('name') }}</label>
+                        <label for="name"><span class="required">*</span>{{ $t('name') }}</label>
 
                         <input name="name" v-model="recipe.name" required />
                     </div>
 
                     <div class="container">
-                        <label for="type">{{ $t('recipeTypes.recipeType') }}</label>
+                        <label for="type"><span class="required">*</span>{{ $t('recipeTypes.recipeType') }}</label>
 
-                        <select v-model="recipe.type" name="type">
+                        <select v-model="recipe.type" name="type" required>
                             <option v-for="type in filterOptions.recipeTypes" :key="type.id" v-bind:value="type.value">
                                 {{ $t(type.name) }}</option>
                         </select>
                     </div>
 
                     <div class="container">
-                        <label for="mainIngredient">{{ $t('mainIngredients.mainIngredient') }}</label>
+                        <label for="mainIngredient"><span class="required">*</span>{{ $t('mainIngredients.mainIngredient') }}</label>
 
-                        <select v-model="recipe.mainIngredient" name="mainIngredient">
+                        <select v-model="recipe.mainIngredient" name="mainIngredient" required>
                             <option v-for="ingredient in filterOptions.mainIngredients" :key="ingredient.id" v-bind:value="ingredient.value">
                                 {{ $t(ingredient.name) }}</option>
                         </select>
@@ -37,7 +37,7 @@
                         <label for="season">{{ $t('seasons.season') }}</label>
 
                         <select v-model="recipe.season" name="season">
-                            <option v-for="season in filterOptions.seasons" :key="season.id" v-bind:value="season.value">
+                            <option v-for="season in filterOptions.seasons" :key="season.id" :value="season.value">
                                 {{ $t(season.name) }}</option>
                         </select>
                     </div>
@@ -72,14 +72,18 @@
                         name="recipe-result-image"
                         @change="handleFile"
                         accept="image/png, image/jpeg" />
-                    <img v-if="image" :src="image" />
-                    <font-awesome-icon v-if="!image" class="fa-icon placeholder" :icon="'utensils'" />
+                    <img v-if="recipe.image" :src="recipe.image" />
+                    <font-awesome-icon v-if="!recipe.image" class="fa-icon placeholder" :icon="'utensils'" />
                 </section>
             </div>
         </form>
 
         <footer>
-            <button class="action-button" type="submit">{{ $t('save') }}</button>
+            <button 
+                class="action-button"
+                :disabled="!isFormValid()"
+                type="submit"
+                v-on:click="save()">{{ $t('save') }}</button>
         </footer>
     </div>
 </template>
@@ -90,6 +94,7 @@ import {recipeService} from '../services/RecipeService';
 import EditIngredient from './EditIngredient.vue';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import * as _ from 'lodash';
 
 library.add(faPlus);
 
@@ -97,12 +102,18 @@ export default Vue.extend({
     components: {
         EditIngredient
     },
+    mounted() {
+        this.reader.onload = (e) => {
+            this.recipe.image = e.target && e.target.result;
+        };
+    },
     data() {
         return {
             recipeViewTitle: 'createRecipe', // isEdit ? ..
             recipe: this.$store.state.recipe,
             filterOptions: recipeService.getFilterOptions(),
-            image: ''
+
+            reader: new FileReader()
         }
     },
     methods: {
@@ -121,14 +132,14 @@ export default Vue.extend({
             this.createImage(files[0]);
         },
         createImage(file) {
-            const image = new Image();
-            const reader = new FileReader();
-            const vm = this;
-
-            reader.onload = (e) => {
-                vm.image = e.target && e.target.result;
-            };
-            reader.readAsDataURL(file);
+            this.reader.readAsDataURL(file);
+        },
+        isFormValid() {
+            return !!this.recipe.name && !_.isNil(this.recipe.type) && this.recipe.ingredients.length > 0 &&
+                _.every(this.recipe.ingredient, ingr => !!ingr.name);
+        },
+        save() {
+            recipeService.createRecipe(this.recipe);
         }
     }
 });

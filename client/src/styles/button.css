@@ -4,6 +4,15 @@ button {
     cursor: pointer;
 }
 
+button:disabled {
+    background-color: gainsboro;
+}
+
+.image-button:disabled {
+    background-color: transparent;
+    color: gainsboro;
+}
+
 .svg-inline--fa.fa-icon {
     width: 3em;
     height: 3em;
