@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import {Recipe, PagedResults, RecipeFiltersInterface, RecipeType, Season, MainIngredient} from '../../../common/models';
+import {Recipe, PagedResults, RecipeFiltersInterface, RecipeType, Season, MainIngredient, Unit} from '../../../common/models';
 
 const recipes: Array<Recipe> = [
     {
@@ -7,9 +7,9 @@ const recipes: Array<Recipe> = [
         datetime: Date.now().toString(),
         name: 'Maailman paras pikkuleipä',
         type: RecipeType.DESSERT,
-        mainIngredient: MainIngredient.OTHER,
+        mainIngredient: MainIngredient.VEGETABLE,
         season: undefined,
-        ingredients: [],
+        ingredients: [{ id: 'i0', name: 'jauhot', quantity: 3, unit: Unit.DL}],
         image: '',
         instructions: 'Näin tehdään maailman parhaat pikkuleivät...'
     },
@@ -18,9 +18,9 @@ const recipes: Array<Recipe> = [
         datetime: Date.now().toString(),
         name: 'Broileri-vuohenjuusto parsakaalilla ja bataatilla',
         type: RecipeType.MEAL,
-        mainIngredient: 1,
+        mainIngredient: MainIngredient.BIRD,
         season: undefined,
-        ingredients: [],
+        ingredients: [{ id: 'i0', name: 'jauhot', quantity: 3, unit: Unit.DL}],
         image: '',
         instructions: 'Näin tehdään...'
     },
@@ -31,7 +31,7 @@ const recipes: Array<Recipe> = [
         type: RecipeType.MEAL,
         mainIngredient: MainIngredient.FISH,
         season: Season.SPRING,
-        ingredients: [],
+        ingredients: [{ id: 'i0', name: 'jauhot', quantity: 3, unit: Unit.DL}],
         image: '',
         instructions: 'Näin tehdään...'
     },
@@ -42,7 +42,7 @@ const recipes: Array<Recipe> = [
         type: RecipeType.SNACK,
         mainIngredient: MainIngredient.MEAT,
         season: undefined,
-        ingredients: [],
+        ingredients: [{ id: 'i0', name: 'jauhot', quantity: 3, unit: Unit.DL}],
         image: '',
         instructions: 'Näin tehdään...'
     }
@@ -64,15 +64,8 @@ export default function recipeRoutes(app, db) {
     app.use(function(req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
         next();
-    });
-
-    app.post('/recipes', (req, res) => {
-        const recipe = req.body;
-        recipe.id = _.last(recipes).id + 1;
-        recipe.datetime = Date.now();
-        recipes.push(recipe);
-        res.send(recipe);
     });
 
     app.get('/recipes', (req, res) => {
@@ -88,5 +81,32 @@ export default function recipeRoutes(app, db) {
             items: items.slice(from, to)
         });
         res.send(result);
+    });
+
+    app.get('/recipe', (req, res) => {
+        const id = req.query.id;
+        const recipe = _.find(recipes, recipe => recipe.id === id);
+        res.send(recipe);
+    });
+
+    app.post('/recipe', (req, res) => {
+        const recipe = req.body;
+        recipe.id = _.toString(parseInt(_.last(recipes).id) + 1);
+        recipe.datetime = Date.now();
+        recipes.push(recipe);
+        res.send(recipe.id);
+    });
+
+    app.put('/recipe', (req, res) => {
+        const recipe = req.body;
+        const indx = _.findIndex(recipes, r => r.id === recipe.id);
+        recipes.splice(indx, 1, recipe);
+        res.send(recipe);
+    });
+
+    app.delete('/recipe', (req, res) => {
+        const id = req.query.id;
+        _.remove(recipes, recipe => recipe.id === id);
+        res.send(id);
     });
 };

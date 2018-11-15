@@ -15,6 +15,10 @@
     "image": "Image",
     "basicInfo": "Basic information",
     "save": "Save",
+    "confirmAction": "Confirm action",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "confirmRecipeDelete": "Are you sure you want to delete recipe {name}?",
     "recipeTypes": {
         "recipeType": "Type",
         "snack": "Snack",

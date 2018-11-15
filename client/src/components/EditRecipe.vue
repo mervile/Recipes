@@ -48,6 +48,7 @@
 
                     <edit-ingredient 
                         v-for="(ingredient, index) in recipe.ingredients"
+                        v-on:remove-ingredient="removeIngredient"
                         :key="ingredient.id"
                         :show-label="index === 0"
                         :ingredient="ingredient"></edit-ingredient>
@@ -79,51 +80,102 @@
         </form>
 
         <footer>
+            <button
+                class="action-button"
+                v-if="isEdit"
+                v-on:click.prevent.stop="confirmDelete()">{{ $t('delete') }}</button>
             <button 
                 class="action-button"
-                :disabled="!isFormValid()"
+                :disabled="!isSaveButtonEnabled()"
                 type="submit"
-                v-on:click="save()">{{ $t('save') }}</button>
+                v-on:click.prevent.stop="save()">{{ $t('save') }}</button>
         </footer>
+
+        <confirm-modal
+            v-if="isModalVisible"
+            v-on:confirm="deleteRecipe()"
+            v-on:cancel="closeModal()">
+            <template slot="content">
+                <div class="modal-content">
+                    <i18n path="confirmRecipeDelete" tag="p">
+                        <span place="name">{{recipe.name}}</span>
+                    </i18n>
+                </div>
+            </template>
+        </confirm-modal>
     </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import {recipeService} from '../services/RecipeService';
+import {Ingredient} from '../../../common/models';
 import EditIngredient from './EditIngredient.vue';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import * as _ from 'lodash';
+import ConfirmModal from './ConfirmModal.vue';
 
 library.add(faPlus);
 
 export default Vue.extend({
     components: {
-        EditIngredient
+        EditIngredient,
+        ConfirmModal
+    },
+    watch: {
+        '$route' (to, from) {
+            this.update(to.params.id);
+        }
     },
     mounted() {
         this.reader.onload = (e) => {
             this.recipe.image = e.target && e.target.result;
         };
+
+        this.update(this.$route.params.id);
     },
     data() {
         return {
-            recipeViewTitle: 'createRecipe', // isEdit ? ..
-            recipe: this.$store.state.recipe,
+            recipeViewTitle: 'createRecipe',
+            recipe: recipeService.createRecipePlaceholder(),
             filterOptions: recipeService.getFilterOptions(),
+            originalRecipe: {},
+            isEdit: false,
+            isModalVisible: false,
 
             reader: new FileReader()
         }
     },
     methods: {
+        update(id) {
+            this.isEdit = !_.isNil(id);
+
+            if (this.isEdit) {
+                this.getRecipe(id);
+            } else {
+                this.recipe = recipeService.createRecipePlaceholder();
+                this.recipeViewTitle = 'createRecipe';
+            }
+        },
+        getRecipe(id) {
+            recipeService.getRecipe(id).then((recipe) => {
+                this.recipe = recipe;
+                this.originalRecipe = _.cloneDeep(recipe);
+                this.recipeViewTitle = this.recipe.name;
+            });
+        },
         addIngredient() {
-            this.$store.commit('addIngredient', {
+            this.recipe.ingredients.push({
                     id: Date.now().toString(),
                     name: '',
-                    quantity: '',
-                    unit: ''
+                    quantity: undefined,
+                    unit: undefined
             });
+        },
+        removeIngredient(id) {
+            const index = _.findIndex(this.recipe.ingredients, (ingr: any) => ingr.id === id);
+            this.recipe.ingredients.splice(index, 1);
         },
         handleFile(e) {
             var files = e.target.files || e.dataTransfer.files;
@@ -134,12 +186,34 @@ export default Vue.extend({
         createImage(file) {
             this.reader.readAsDataURL(file);
         },
+        isSaveButtonEnabled() {
+            return this.isEdit && !_.isEqual(this.originalRecipe, this.recipe); 
+        },
         isFormValid() {
             return !!this.recipe.name && !_.isNil(this.recipe.type) && this.recipe.ingredients.length > 0 &&
-                _.every(this.recipe.ingredient, ingr => !!ingr.name);
+                _.every(this.recipe.ingredients, ingr => !!ingr.name);
         },
         save() {
-            recipeService.createRecipe(this.recipe);
+            if (this.isEdit) {
+                recipeService.updateRecipe(this.recipe).then(() => {
+                    this.originalRecipe = _.cloneDeep(this.recipe);
+                });
+            } else {
+                recipeService.createRecipe(this.recipe).then((id) => {
+                    this.$router.push({ path: `/recipe/${id}` });
+                });
+            }
+        },
+        confirmDelete() {
+            this.isModalVisible = true;
+        },
+        closeModal() {
+            this.isModalVisible = false;
+        },
+        deleteRecipe() {
+            recipeService.deleteRecipe(this.recipe.id).then(() => {
+                this.$router.push({ path: `/recipes` });
+            });
         }
     }
 });
@@ -206,6 +280,10 @@ footer {
     justify-content: flex-end;
     background-image: linear-gradient(var(--content-background-color), white);
     border-top: 1px solid var(--content-color);
+}
+
+.modal-content {
+    padding: 15px;
 }
 
 @media screen and (max-width: 744px) {

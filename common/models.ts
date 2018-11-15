@@ -1,6 +1,6 @@
 export enum RecipeType { SNACK, MEAL, DESSERT } 
 
-export enum MainIngredient { FISH, BIRD, VEGETABLE, MEAT, OTHER }
+export enum MainIngredient { FISH, BIRD, VEGETABLE, MEAT }
 
 export enum Season { SUMMER, FALL, WINTER, SPRING }
 
@@ -9,8 +9,8 @@ export enum Unit { ML, DL, L, G, KG, TSP, TBSP }
 export interface Ingredient {
     id: string,
     name: string,
-    quantity: number,
-    unit: Unit
+    quantity?: number,
+    unit?: Unit
 }
 
 export interface GridItemInterface {

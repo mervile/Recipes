@@ -15,6 +15,10 @@
     "image": "Kuva",
     "basicInfo": "Perustiedot",
     "save": "Tallenna",
+    "confirmAction": "Vahvista toiminto",
+    "cancel": "Peruuta",
+    "confirm": "Vahvista",
+    "confirmRecipeDelete": "Haluatko poistaa reseptin {name}?",
     "recipeTypes": {
         "recipeType": "Tyyppi",
         "snack": "Välipala",

@@ -8,10 +8,11 @@ import EditRecipe from './components/EditRecipe.vue';
 Vue.use(VueRouter);
 
 const routes = [
-    { id: '0', path: '/', redirect: '/recipes' },
-    { id: '1', path: '/recipes', component: Recipes, name: 'recipes' },
-    { id: '2', path: '/edit-recipe', component: EditRecipe, name: 'createRecipe' },
-    { id: '3', path: '/map', component: IngredientMap, name: 'map' },
+    { id: '0', path: '/', redirect: '/recipes'},
+    { id: '1', path: '/recipes', component: Recipes, name: 'recipes', inTopNavigation: true},
+    { id: '2', path: '/create', component: EditRecipe, name: 'createRecipe', inTopNavigation: true},
+    { id: '3', path: '/recipe/:id', component: EditRecipe, name: 'editRecipe'},
+    { id: '4', path: '/map', component: IngredientMap, name: 'map', inTopNavigation: true},
 ];
 
 const router = new VueRouter({

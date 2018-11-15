@@ -18,7 +18,7 @@
             </select>
         </div>
 
-        <button class="image-button" v-on:click.stop.prevent="removeIngredient()">
+        <button class="image-button" v-on:click.stop.prevent="$emit('remove-ingredient', ingredient.id)">
             <font-awesome-icon class="fa-icon" icon="minus" />
         </button>
     </div>
@@ -40,11 +40,6 @@ export default Vue.extend({
     data() {
         return {
             units: recipeService.getUnitOptions(),
-        }
-    },
-    methods: {
-        removeIngredient() {
-            this.$store.commit('removeIngredient', this.ingredient.id);
         }
     }
 });
