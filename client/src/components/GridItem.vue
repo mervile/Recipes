@@ -1,24 +1,23 @@
 <template>
-    <div class="grid-item">
+    <div class="grid-item" v-on:click.prevent.stop="onClick()">
         <h3>{{ item.name }}</h3>
-        <font-awesome-icon v-if="!item.image" class="fa-icon" v-bind:icon="placeholderImage" />
-        <img v-if="item.image" :src="item.image" />
+        <component :is="component" :item="item" class="ext-component"></component>
         <div class="controls"></div>
     </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCookieBite, faUtensils } from '@fortawesome/free-solid-svg-icons'
-
-library.add(faCookieBite);
-library.add(faUtensils);
+import Vue from 'vue';
 
 export default Vue.extend({
     props: {
-        placeholderImage: String,
-        item: Object
+        item: Object,
+        component: String
+    },
+    methods: {
+        onClick() {
+            this.$emit('grid-item-clicked', this.item);
+        }
     }
 });
 </script>
@@ -33,9 +32,10 @@ export default Vue.extend({
     justify-content: space-between;
     align-items: center;
     padding: 1em;
+    cursor: pointer;
 }
 
-img {
+.ext-component {
     max-width: 150px;
     max-height: 150px;
 }

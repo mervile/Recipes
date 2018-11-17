@@ -4,7 +4,7 @@ export enum MainIngredient { FISH, BIRD, VEGETABLE, MEAT }
 
 export enum Season { SUMMER, FALL, WINTER, SPRING }
 
-export enum Unit { ML, DL, L, G, KG, TSP, TBSP }
+export enum Unit { ML = "ml", DL = "dl", L = "l", G = "g", KG = "kg", TSP = "tsp", TBSP = "tbsp" }
 
 export interface Ingredient {
     id: string,

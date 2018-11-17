@@ -86,21 +86,26 @@
                 v-on:click.prevent.stop="confirmDelete()">{{ $t('delete') }}</button>
             <button 
                 class="action-button"
-                :disabled="!isSaveButtonEnabled()"
+                :disabled="!isSaveButtonEnabled() || !isFormValid()"
                 type="submit"
                 v-on:click.prevent.stop="save()">{{ $t('save') }}</button>
         </footer>
 
-        <confirm-modal
-            v-if="isModalVisible"
-            v-on:confirm="deleteRecipe()"
-            v-on:cancel="closeModal()">
-            <template slot="content">
-                <div class="modal-content">
-                    <i18n path="confirmRecipeDelete" tag="p">
-                        <span place="name">{{recipe.name}}</span>
-                    </i18n>
-                </div>
+        <confirm-modal v-if="isModalVisible" v-on:close="closeModal()">
+            <template slot="header">{{ $t('confirmAction') }}</template>
+
+            <div class="modal-content">
+                <i18n path="confirmRecipeDelete" tag="p">
+                    <span place="name">{{recipe.name}}</span>
+                </i18n>
+            </div>
+
+            <template slot="footer">
+                <button 
+                    v-on:click.prevent.stop="closeModal()">{{ $t('cancel') }}</button>
+                <button 
+                    class="action-button"
+                    v-on:click.prevent.stop="deleteRecipe()">{{ $t('confirm') }}</button>
             </template>
         </confirm-modal>
     </div>
@@ -114,7 +119,7 @@ import EditIngredient from './EditIngredient.vue';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import * as _ from 'lodash';
-import ConfirmModal from './ConfirmModal.vue';
+import ConfirmModal from './Modal.vue';
 
 library.add(faPlus);
 
@@ -187,7 +192,7 @@ export default Vue.extend({
             this.reader.readAsDataURL(file);
         },
         isSaveButtonEnabled() {
-            return this.isEdit && !_.isEqual(this.originalRecipe, this.recipe); 
+            return !_.isEqual(this.originalRecipe, this.recipe); 
         },
         isFormValid() {
             return !!this.recipe.name && !_.isNil(this.recipe.type) && this.recipe.ingredients.length > 0 &&

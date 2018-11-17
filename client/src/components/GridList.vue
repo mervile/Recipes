@@ -1,9 +1,12 @@
 <template>
     <div>
         <grid-item
-            v-for="item in items" :key="item.id"
-            :placeholder-image="getImage(item)"
-            :item="item"></grid-item>
+            v-for="item in items"
+            v-on:grid-item-clicked="onItemClick"
+            :key="item.id"
+            :item="item"
+            :component="component">
+        </grid-item>
     </div>
 </template>
 
@@ -18,7 +21,12 @@ export default Vue.extend({
     },
     props: {
         items: Array,
-        getImage: Function
+        component: String
+    },
+    methods: {
+        onItemClick(item) {
+            this.$emit('grid-item-clicked', item);
+        }
     }
 });
 </script>

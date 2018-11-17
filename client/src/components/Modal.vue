@@ -1,17 +1,19 @@
 <template>
 <transition name="modal-fade">
-    <div class="modal-backdrop">
+    <div class="modal-backdrop" v-on:keyup.esc="close()" tabindex="0">
         <div class="modal">
-            <header slot="header" class="modal-header">{{ $t('confirmAction') }}</header>
+            <header class="modal-header">
+                <slot name="header"></slot>
+            </header>
 
-            <slot name="content" class="modal-content"></slot>
+            <slot class="modal-content"></slot>
 
-            <footer slot="footer" class="modal-footer">
-                <button 
-                    v-on:click.prevent.stop="cancel()">{{ $t('cancel') }}</button>
-                <button 
-                    class="action-button"
-                    v-on:click.prevent.stop="confirm()">{{ $t('confirm') }}</button>
+            <footer class="modal-footer">
+                <slot name="footer">
+                    <button 
+                        class="action-button"
+                        v-on:click.prevent.stop="close()">{{ $t('close') }}</button>
+                </slot>
             </footer>
         </div>
     </div>
@@ -22,14 +24,13 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-    props: {
+    mounted() {
+        const el = document.getElementsByClassName('modal-backdrop')[0];
+        (el as HTMLElement).focus();
     },
     methods: {
-        cancel() {
-            this.$emit('cancel');
-        },
-        confirm() {
-            this.$emit('confirm');
+        close() {
+            this.$emit('close');
         }
     }
 });

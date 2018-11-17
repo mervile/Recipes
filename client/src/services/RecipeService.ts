@@ -95,7 +95,6 @@ export class RecipeService {
 
     public getUnitOptions() {
         return [
-            { id: 0, value: "", name: "unit" },
             { id: 1, value: Unit.ML, name: "units.ml" },
             { id: 2, value: Unit.DL, name: "units.dl" },
             { id: 3, value: Unit.L, name: "units.l" },
