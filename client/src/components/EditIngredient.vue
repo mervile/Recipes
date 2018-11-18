@@ -1,11 +1,6 @@
 <template>
     <div class="ingredient">
         <div class="container">
-            <label v-if="showLabel" for="ingredient-name"><span class="required">*</span>{{ $t('name') }}</label>
-            <input name="ingredient-name" v-model="ingredient.name" required />
-        </div>
-
-        <div class="container">
             <label v-if="showLabel" for="ingredient-quantity">{{ $t('quantity') }}</label>
             <input name="ingredient-quantity" type="number" v-model="ingredient.quantity" />
         </div>
@@ -16,6 +11,11 @@
                 <option v-for="unit in units" :key="unit.id" :value="unit.value">
                     {{ $t(unit.name) }}</option>
             </select>
+        </div>
+
+        <div class="container">
+            <label v-if="showLabel" for="ingredient-name"><span class="required">*</span>{{ $t('name') }}</label>
+            <input name="ingredient-name" v-model="ingredient.name" required />
         </div>
 
         <button class="image-button" v-on:click.stop.prevent="$emit('remove-ingredient', ingredient.id)">

@@ -1,6 +1,6 @@
 <template>
 <transition name="modal-fade">
-    <div class="modal-backdrop" v-on:keyup.esc="close()" tabindex="0">
+    <div class="modal-backdrop" v-on:keyup.esc="close()" tabindex="0" v-on:click.self="close()">
         <div class="modal">
             <header class="modal-header">
                 <slot name="header"></slot>
@@ -36,7 +36,7 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
+<style>
 .modal-backdrop {
     position: fixed;
     top: 0;
