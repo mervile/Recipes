@@ -1,7 +1,9 @@
 <template>
 <recipe-modal v-on:close="closeModal()">
     <template slot="header">
+        <dropdown id="test" append-to-body="true"><div>test</div></dropdown>
         <h1>{{recipe.name}}</h1>
+
         <button v-on:click.stop.prevent="closeModal()" class="image-button">
             <font-awesome-icon class="fa-icon" v-bind:icon="'times'" />
         </button>
@@ -34,6 +36,7 @@ import Vue from 'vue';
 import {Recipe} from '../../../common/models';
 import RecipeImage from './RecipeImage.vue';
 import RecipeModal from './Modal.vue';
+import Dropdown from './Dropdown.vue';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
@@ -42,7 +45,8 @@ library.add(faTimes);
 export default Vue.extend({
     components: {
         RecipeImage,
-        RecipeModal
+        RecipeModal,
+        Dropdown
     },
     props: {
         recipe: Object

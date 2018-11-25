@@ -1,6 +1,6 @@
 <template>
 <transition name="modal-fade">
-    <div class="modal-backdrop" v-on:keyup.esc="close()" tabindex="0" v-on:click.self="close()">
+    <div class="modal-backdrop" v-on:keydown.self.esc="close()" tabindex="0" v-on:click.self="close()">
         <div class="modal">
             <header class="modal-header">
                 <slot name="header"></slot>
@@ -25,8 +25,7 @@ import Vue from 'vue'
 
 export default Vue.extend({
     mounted() {
-        const el = document.getElementsByClassName('modal-backdrop')[0];
-        (el as HTMLElement).focus();
+        this.$el.focus();
     },
     methods: {
         close() {
