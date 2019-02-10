@@ -59,5 +59,9 @@
     "clearMap": "Clear all",
     "remove": "Remove",
     "move": "Move",
-    "downloadMap": "Download"
+    "downloadMap": "Download",
+    "recipeMenu": {
+        "modify": "Modify",
+        "delete": "Delete"
+    }
 }

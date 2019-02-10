@@ -59,5 +59,9 @@
     "remove": "Poista",
     "move": "Siirrä",
     "clearMap": "Tyhjennä",
-    "downloadMap": "Lataa merkinnät"
+    "downloadMap": "Lataa merkinnät",
+    "recipeMenu": {
+        "modify": "Muokkaa",
+        "delete": "Poista"
+    }
 }
