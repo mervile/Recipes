@@ -1,6 +1,9 @@
 <template>
     <div class="dropdown-container">
-        <button :id="toggleId" class="dropdown-toggle" @click.stop.prevent="toggle()">
+        <button :id="toggleId"
+            class="dropdown-toggle"
+            @click.stop.prevent="toggle()"
+            @keydown.space.self="toggle()">
             <slot name="toggle">Toggle</slot>
         </button>
 
@@ -27,6 +30,8 @@ export default Vue.extend({
         appendToBody: Boolean
     },
     mounted() {
+        // TODO close when focus is lost
+        // TODO calc position after window resize
         dropdown = document.getElementById(this.id);
         if (!dropdown) {
             throw new Error("Dropdown element with id " + this.id + " not found!");

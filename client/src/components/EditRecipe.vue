@@ -82,32 +82,15 @@
         <footer>
             <button
                 class="action-button"
-                v-if="isEdit"
-                v-on:click.prevent.stop="confirmDelete()">{{ $t('delete') }}</button>
+                v-if="isEdit">
+                <delete-recipe-confirm-modal :recipe="recipe">{{ $t('delete') }}</delete-recipe-confirm-modal>
+            </button>
             <button 
                 class="action-button"
                 :disabled="!isSaveButtonEnabled() || !isFormValid()"
                 type="submit"
                 v-on:click.prevent.stop="save()">{{ $t('save') }}</button>
         </footer>
-
-        <confirm-modal v-if="isModalVisible" v-on:close="closeModal()">
-            <template slot="header">{{ $t('confirmAction') }}</template>
-
-            <div class="modal-content">
-                <i18n path="confirmRecipeDelete" tag="p">
-                    <span place="name">{{recipe.name}}</span>
-                </i18n>
-            </div>
-
-            <template slot="footer">
-                <button 
-                    v-on:click.prevent.stop="closeModal()">{{ $t('cancel') }}</button>
-                <button 
-                    class="action-button"
-                    v-on:click.prevent.stop="deleteRecipe()">{{ $t('confirm') }}</button>
-            </template>
-        </confirm-modal>
     </div>
 </template>
 
@@ -116,17 +99,17 @@ import Vue from 'vue';
 import {recipeService} from '../services/RecipeService';
 import {Ingredient} from '../../../common/models';
 import EditIngredient from './EditIngredient.vue';
+import DeleteRecipeConfirmModal from './DeleteRecipeConfirmModal.vue';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import * as _ from 'lodash';
-import ConfirmModal from './Modal.vue';
 
 library.add(faPlus);
 
 export default Vue.extend({
     components: {
         EditIngredient,
-        ConfirmModal
+        DeleteRecipeConfirmModal
     },
     watch: {
         '$route' (to, from) {
@@ -147,7 +130,6 @@ export default Vue.extend({
             filterOptions: recipeService.getFilterOptions(),
             originalRecipe: {},
             isEdit: false,
-            isModalVisible: false,
 
             reader: new FileReader()
         }
@@ -208,17 +190,6 @@ export default Vue.extend({
                     this.$router.push({ path: `/recipe/${id}` });
                 });
             }
-        },
-        confirmDelete() {
-            this.isModalVisible = true;
-        },
-        closeModal() {
-            this.isModalVisible = false;
-        },
-        deleteRecipe() {
-            recipeService.deleteRecipe(this.recipe.id).then(() => {
-                this.$router.push({ path: `/recipes` });
-            });
         }
     }
 });

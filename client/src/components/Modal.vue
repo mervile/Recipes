@@ -64,7 +64,7 @@ export default Vue.extend({
 
 .modal-header {
     border-bottom: 1px solid #eeeeee;
-    color: #4AAE9B;
+    color: black;
     justify-content: space-between;
 }
 

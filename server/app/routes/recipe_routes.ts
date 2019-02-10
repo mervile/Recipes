@@ -91,7 +91,7 @@ export default function recipeRoutes(app, db) {
 
     app.post('/recipe', (req, res) => {
         const recipe = req.body;
-        recipe.id = _.toString(parseInt(_.last(recipes).id) + 1);
+        recipe.id = recipes.length > 0 ? _.toString(parseInt(_.last(recipes).id) + 1) : 0;
         recipe.datetime = Date.now();
         recipes.push(recipe);
         res.send(recipe.id);
