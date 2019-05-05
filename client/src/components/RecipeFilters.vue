@@ -45,7 +45,7 @@
         beforeDestroy () {
             this.debouncedSearch.cancel();
         },
-        computed: {
+        computed: { // TODO allow empty values
             filterOptions: function() {
                 return recipeService.getFilterOptions()
             },

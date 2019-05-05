@@ -55,6 +55,7 @@ export class RecipeService {
     public createRecipePlaceholder(): Recipe {
         return {
             id: '',
+            _id: undefined,
             datetime: '',
             name: '',
             type: RecipeType.MEAL,

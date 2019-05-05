@@ -1,64 +1,14 @@
 import * as _ from 'lodash';
-import {Recipe, PagedResults, RecipeFiltersInterface, RecipeType, Season, MainIngredient, Unit} from '../../../common/models';
+import {Recipe, PagedResults} from '../../../common/models';
+import { MongoDBService } from '../services/MongoDBService';
+import DBService from '../services/AbstractDBService';
 
-const recipes: Array<Recipe> = [
-    {
-        id: '0',
-        datetime: Date.now().toString(),
-        name: 'Maailman paras pikkuleipä',
-        type: RecipeType.DESSERT,
-        mainIngredient: MainIngredient.VEGETABLE,
-        season: undefined,
-        ingredients: [{ id: 'i0', name: 'jauhot', quantity: 3, unit: Unit.DL}],
-        image: '',
-        instructions: 'Näin tehdään maailman parhaat pikkuleivät...'
-    },
-    {
-        id: '1',
-        datetime: Date.now().toString(),
-        name: 'Broileri-vuohenjuusto parsakaalilla ja bataatilla',
-        type: RecipeType.MEAL,
-        mainIngredient: MainIngredient.BIRD,
-        season: undefined,
-        ingredients: [{ id: 'i0', name: 'jauhot', quantity: 3, unit: Unit.DL}],
-        image: '',
-        instructions: 'Näin tehdään...'
-    },
-    {
-        id: '2',
-        datetime: Date.now().toString(),
-        name: 'Lohikeitto',
-        type: RecipeType.MEAL,
-        mainIngredient: MainIngredient.FISH,
-        season: Season.SPRING,
-        ingredients: [{ id: 'i0', name: 'jauhot', quantity: 3, unit: Unit.DL}],
-        image: '',
-        instructions: 'Näin tehdään...'
-    },
-    {
-        id: '3',
-        datetime: Date.now().toString(),
-        name: 'Voileipä',
-        type: RecipeType.SNACK,
-        mainIngredient: MainIngredient.MEAT,
-        season: undefined,
-        ingredients: [{ id: 'i0', name: 'jauhot', quantity: 3, unit: Unit.DL}],
-        image: '',
-        instructions: 'Näin tehdään...'
-    }
-];
+// Middleware to catch all failing requests.
+const asyncMiddleware = fn => (req, res, next) => {
+    Promise.resolve(fn(req, res, next)).catch(next);
+};
 
-function filterRecipes(recipes: Array<Recipe>, filters: RecipeFiltersInterface) {
-    return recipes.filter(recipe => {
-        if ((filters.mainIngredient !== '' && filters.mainIngredient !== recipe.mainIngredient)
-            || (filters.searchText !== '' && JSON.stringify(recipe).match(filters.searchText) === null)
-            || (filters.season !== '' && filters.season !== recipe.season)
-            || (filters.type !== '' && filters.type !== recipe.type)) {
-                return false;
-        }
-        return true;
-    });
-}
+const dbService: DBService = MongoDBService.getInstance();
 
 export default function recipeRoutes(app, db) {
     app.use(function(req, res, next) {
@@ -68,11 +18,13 @@ export default function recipeRoutes(app, db) {
         next();
     });
 
-    app.get('/recipes', (req, res) => {
+    app.get('/recipes', asyncMiddleware(async (req, res, next) => {
+        // TODO id issue with new recipes
+        // TODO unit tests
         let {options, filters} = req.query;
         options = JSON.parse(options);
         filters = JSON.parse(filters);
-        const items: Array<Recipe> = filterRecipes(recipes, filters);
+        const items: Array<Recipe> = await dbService.findRecipes(filters);
         const from = options.page*options.itemsPerPage;
         const to = from + options.itemsPerPage;
         const result: PagedResults = _.assign(options, {
@@ -81,32 +33,26 @@ export default function recipeRoutes(app, db) {
             items: items.slice(from, to)
         });
         res.send(result);
-    });
+    }));
 
-    app.get('/recipe', (req, res) => {
-        const id = req.query.id;
-        const recipe = _.find(recipes, recipe => recipe.id === id);
+    app.get('/recipe', asyncMiddleware(async (req, res, next) => {
+        const recipe = await dbService.findRecipeById(req.query.id);
         res.send(recipe);
-    });
+    }));
 
-    app.post('/recipe', (req, res) => {
-        const recipe = req.body;
-        recipe.id = recipes.length > 0 ? _.toString(parseInt(_.last(recipes).id) + 1) : 0;
-        recipe.datetime = Date.now();
-        recipes.push(recipe);
+    app.post('/recipe', asyncMiddleware(async (req, res, next) => {
+        const recipe = await dbService.insertRecipe(req.body);
         res.send(recipe.id);
-    });
+    }));
 
-    app.put('/recipe', (req, res) => {
-        const recipe = req.body;
-        const indx = _.findIndex(recipes, r => r.id === recipe.id);
-        recipes.splice(indx, 1, recipe);
+    app.put('/recipe', asyncMiddleware(async (req, res, next) => {
+        const recipe = await dbService.updateRecipe(req.body);
         res.send(recipe);
-    });
+    }));
 
-    app.delete('/recipe', (req, res) => {
+    app.delete('/recipe', asyncMiddleware(async (req, res, next) => {
         const id = req.query.id;
-        _.remove(recipes, recipe => recipe.id === id);
+        await dbService.removeRecipe(id);
         res.send(id);
-    });
+    }));
 };

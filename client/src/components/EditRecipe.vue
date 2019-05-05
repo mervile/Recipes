@@ -68,6 +68,7 @@
             <div class="col">
                 <section class="image">
                     <h3>{{ $t('image') }}</h3>
+                    <!-- TODO Size restriction -->
                     <input type="file"
                         id="recipe-result-image"
                         name="recipe-result-image"

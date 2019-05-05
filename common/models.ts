@@ -20,6 +20,7 @@ export interface GridItemInterface {
 
 export interface Recipe extends GridItemInterface {
     readonly datetime: string,
+    _id: any,
     type: RecipeType,
     mainIngredient: MainIngredient,
     season?: Season,
