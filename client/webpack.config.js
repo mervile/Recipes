@@ -23,7 +23,12 @@ module.exports = {
     devtool: 'inline-source-map',
     devServer: {
         contentBase: './dist',
-        hot: true
+        hot: true,
+        proxy: {
+            "/api/**": {
+                target: "http://[::1]:8000",
+            }
+        }
     },
     module: {
         rules: [

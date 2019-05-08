@@ -1,61 +1,47 @@
 import axios from 'axios';
 import { Recipe, MainIngredient, PagedResults, PagingOptions, RecipeFiltersInterface, RecipeType, Season, Unit } from '../../../common/models';
 
+axios.interceptors.response.use(function (response) {
+    return response;
+}, function (error) {
+    console.error('Request failed!', error);
+    return Promise.reject(error);
+});
 
 export class RecipeService {
 
     constructor() {
     }
 
-    public getRecipes(options: PagingOptions, filters: RecipeFiltersInterface): Promise<PagedResults> {
-        return axios.get('http://localhost:8000/recipes', { params: { options, filters }})
-            .then((res) => {
-                return res.data;
-            });
+    public async getRecipes(options: PagingOptions, filters: RecipeFiltersInterface): Promise<PagedResults> {
+        const result = await axios.get('/api/recipes', { params: { options, filters }});
+        return result.data;
     }
 
-    public async getRecipe(id: String) {
-        try {
-            const result = await axios.get('http://localhost:8000/recipe', { params: {id} });
-            return result.data;
-        } catch(error) {
-            console.log('ERROR', error);
-        }
+    public async getRecipe(id: String): Promise<Recipe> {
+        const result = await axios.get('/api/recipe', { params: {id} });
+        return result.data;
     }
 
-    public createRecipe(recipe: Recipe) {
-        return axios.post('http://localhost:8000/recipe', recipe)
-            .then((res) => {
-                return res.data;
-            })
-            .catch((error) => {
-                console.log('ERROR', error);
-            });
+    public async createRecipe(recipe: Recipe): Promise<Recipe> {
+        const result = await axios.post('/api/recipe', recipe);
+        return result.data;
     }
 
-    public updateRecipe(recipe: Recipe) {
-        return axios.put('http://localhost:8000/recipe', recipe)
-            .then((res) => {
-                return res.data;
-            })
-            .catch((error) => {
-                console.log('ERROR', error);
-            });
+    public async updateRecipe(recipe: Recipe): Promise<Recipe> {
+        const result = await axios.put('/api/recipe', recipe);
+        return result.data;
     }
 
-    public async deleteRecipe(id: string) {
-        try {
-            const result = await axios.delete('http://localhost:8000/recipe', { params: {id} });
-            return result.data;
-        } catch(error) {
-            console.log('ERROR', error);
-        }
+    public async deleteRecipe(id: string): Promise<string> {
+        const result = await axios.delete('/api/recipe', { params: {id} });
+        return result.data;
     }
 
     public createRecipePlaceholder(): Recipe {
         return {
             id: '',
-            _id: undefined,
+            _id: undefined, // MongoDB specific
             datetime: '',
             name: '',
             type: RecipeType.MEAL,

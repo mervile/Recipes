@@ -18,9 +18,10 @@ export default function recipeRoutes(app, db) {
         next();
     });
 
-    app.get('/recipes', asyncMiddleware(async (req, res, next) => {
+    app.get('/api/recipes', asyncMiddleware(async (req, res, next) => {
         // TODO id issue with new recipes
         // TODO unit tests
+        // TODO try out GraphQL?
         let {options, filters} = req.query;
         options = JSON.parse(options);
         filters = JSON.parse(filters);
@@ -35,22 +36,22 @@ export default function recipeRoutes(app, db) {
         res.send(result);
     }));
 
-    app.get('/recipe', asyncMiddleware(async (req, res, next) => {
+    app.get('/api/recipe', asyncMiddleware(async (req, res, next) => {
         const recipe = await dbService.findRecipeById(req.query.id);
         res.send(recipe);
     }));
 
-    app.post('/recipe', asyncMiddleware(async (req, res, next) => {
+    app.post('/api/recipe', asyncMiddleware(async (req, res, next) => {
         const recipe = await dbService.insertRecipe(req.body);
         res.send(recipe.id);
     }));
 
-    app.put('/recipe', asyncMiddleware(async (req, res, next) => {
+    app.put('/api/recipe', asyncMiddleware(async (req, res, next) => {
         const recipe = await dbService.updateRecipe(req.body);
         res.send(recipe);
     }));
 
-    app.delete('/recipe', asyncMiddleware(async (req, res, next) => {
+    app.delete('/api/recipe', asyncMiddleware(async (req, res, next) => {
         const id = req.query.id;
         await dbService.removeRecipe(id);
         res.send(id);
