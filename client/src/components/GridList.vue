@@ -33,10 +33,25 @@ export default Vue.extend({
 
 <style scoped>
 div {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    grid-gap: 10px;
-    grid-auto-rows: minmax(200px, auto);
+    display: flex;
+    flex-direction: column;
     padding: 1em;
+}
+
+.grid-item {
+    margin-top: 10px;
+}
+
+@media screen and (min-width: 500px) {
+    div {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-gap: 10px;
+        grid-auto-rows: minmax(200px, auto);
+    }
+
+    .grid-item {
+        margin-top: 0px;
+    }
 }
 </style>

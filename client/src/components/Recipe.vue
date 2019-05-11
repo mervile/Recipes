@@ -83,25 +83,25 @@ export default Vue.extend({
     overflow-y: auto;
 }
 
-.ingredients, .instructions {
+.modal .ingredients, .modal .instructions {
     padding: 1em;
 }
 
-.ingredients ul {
+.modal .ingredients ul {
     margin: 0 1em;
 }
 
-.recipe-image {
+.modal .recipe-image {
     width: 100%;
     text-align: center;
 }
 
-.recipe-image img {
+.modal .recipe-image img {
     max-width: 250px;
     max-height: 250px;
 }
 
-.image {
+.modal .image {
     display: flex;
     justify-content: space-around;
     padding: 1em;

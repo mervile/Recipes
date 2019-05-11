@@ -8,6 +8,7 @@
         <div class="container">
             <label for="recipeType">{{ $t('recipeTypes.recipeType') }}</label>
             <select v-model="type" name="recipeType">
+                <option value="">-</option>
                 <option v-for="type in filterOptions.recipeTypes" :key="type.id" v-bind:value="type.value">
                     {{ $t(type.name) }}</option>
             </select>
@@ -16,6 +17,7 @@
         <div class="container">
             <label for="mainIngredient">{{ $t('mainIngredients.mainIngredient') }}</label>
             <select v-model="mainIngredient" name="mainIngredient">
+                <option value="">-</option>
                 <option v-for="ingredient in filterOptions.mainIngredients" :key="ingredient.id" v-bind:value="ingredient.value">
                     {{ $t(ingredient.name) }}</option>
             </select>
@@ -24,6 +26,7 @@
         <div class="container">
             <label for="season">{{ $t('seasons.season') }}</label>
             <select v-model="season" name="season">
+                <option value="">-</option>
                 <option v-for="season in filterOptions.seasons" :key="season.id" v-bind:value="season.value">
                     {{ $t(season.name) }}</option>
             </select>
@@ -45,7 +48,7 @@
         beforeDestroy () {
             this.debouncedSearch.cancel();
         },
-        computed: { // TODO allow empty values
+        computed: {
             filterOptions: function() {
                 return recipeService.getFilterOptions()
             },
@@ -99,18 +102,24 @@
     .searchFilters {
         border-bottom: 1px solid var(--content-color);
         display: flex;
-        flex-wrap: wrap;
+        flex-direction: column;
         padding: 1em;
+        background-color: var(--light-background-color);
+    }
+
+    .searchFilters .container {
+        min-width: 150px;
     }
 
     .searchFilters button {
         min-width: 80px;
+        margin: 3px 1em 1em 0;
     }
 
-    @media screen and (max-width: 500px) {
+    @media screen and (min-width: 500px) {
         .searchFilters {
-            flex-direction: column;
-            flex-wrap: nowrap;
+            flex-direction: row;
+            flex-wrap: wrap;
         }
     }
 </style>

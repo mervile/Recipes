@@ -26,13 +26,19 @@ export default Vue.extend({
 .grid-item {
     min-width: 100px;
     min-height: 100px;
-    border: 1px solid black;
+    border: 1px solid var(--content-color);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     padding: 1em;
     cursor: pointer;
+    background-color: var(--light-background-color);
+    box-shadow: 1px 1px 3px gainsboro;
+}
+
+h3 {
+    margin-bottom: 0.5em;
 }
 
 .ext-component {

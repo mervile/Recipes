@@ -109,9 +109,7 @@ export default Vue.extend({
 <style scoped>
 .map {
     width: 100%;
-    position: absolute;
-    top: 84px;
-    bottom: 0px;
+    height: 100%;
 }
 
 #map {
@@ -120,14 +118,14 @@ export default Vue.extend({
 }
 
 .controls {
-    position: absolute;
+    position: sticky;
     bottom: 0px;
     left: 0px;
     background-color: aliceblue;
     border: 1px solid darkgray;
     padding: 1em;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
     width: 100%;
@@ -148,15 +146,10 @@ export default Vue.extend({
     align-items: flex-end;
 }
 
-@media screen and (max-width: 500px) {
-    .map {
-        top: 185px;
-    }
-}
-
-@media screen and (max-width: 640px) {
+@media screen and (min-width: 640px) {
     .controls {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
     }
 }
 </style>

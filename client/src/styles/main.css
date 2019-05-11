@@ -8,9 +8,9 @@
 }
 
 html {
-    --main-background-color: #f7f7f7;
-    --content-background-color: rgb(247, 238, 248);
-    --content-color: rgb(102, 10, 79);
+    --light-background-color: #fbfbfb;
+    --content-background-color: #eae9e3;
+    --content-color: rgb(94, 71, 4);
 }
 
 html, body {
@@ -19,5 +19,9 @@ html, body {
     padding: 0px;
     width: 100%;
     min-height: 100vh;
-    background-image: linear-gradient(white, var(--main-background-color));
+    background: beige;
+}
+
+.main-content {
+    height: 100vh;
 }

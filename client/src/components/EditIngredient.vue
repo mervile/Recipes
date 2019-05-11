@@ -1,11 +1,11 @@
 <template>
     <div class="ingredient">
-        <div class="container">
+        <div class="container quantity">
             <label v-if="showLabel" for="ingredient-quantity">{{ $t('quantity') }}</label>
-            <input name="ingredient-quantity" type="number" v-model="ingredient.quantity" />
+            <input name="ingredient-quantity" placeholder="0" step="0.01" type="number" min="0" v-model="ingredient.quantity" />
         </div>
 
-        <div class="container">
+        <div class="container unit">
             <label v-if="showLabel" for="ingredient-unit">{{ $t('unit') }}</label>
             <select name="ingredient-unit" v-model="ingredient.unit">
                 <option v-for="unit in units" :key="unit.id" :value="unit.value">
@@ -13,7 +13,7 @@
             </select>
         </div>
 
-        <div class="container">
+        <div class="container" v-on:keydown.down.stop.prevent="$emit('add-ingredient', ingredient.id)">
             <label v-if="showLabel" for="ingredient-name"><span class="required">*</span>{{ $t('name') }}</label>
             <input name="ingredient-name" v-model="ingredient.name" required />
         </div>
@@ -37,6 +37,12 @@ export default Vue.extend({
         ingredient: Object,
         showLabel: Boolean
     },
+    mounted() {
+        const inputs = this.$el.getElementsByTagName('input');
+        if (inputs[0]) {
+            inputs[0].focus();
+        }
+    },
     data() {
         return {
             units: recipeService.getUnitOptions(),
@@ -48,13 +54,9 @@ export default Vue.extend({
 <style scoped>
 .ingredient {
     display: flex;
-    flex-wrap: wrap;
 }
 
-@media screen and (max-width: 500px) {
-    .ingredient {
-        flex-direction: column;
-        flex-wrap: nowrap;
-    }
+.quantity {
+    width: 80px;
 }
 </style>
