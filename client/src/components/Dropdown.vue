@@ -23,15 +23,23 @@ import * as _ from 'lodash';
 
 let dropdown: HTMLElement|null;
 
+function recCheckFocus(node) {
+    if (document.hasFocus() && document.activeElement === node) {
+        return true;
+    } else if (node.childNodes.length === 0) {
+        return false;
+    }
+    return _.some(node.childNodes, childNode => recCheckFocus(childNode));
+}
+
 export default Vue.extend({
     props: {
         id: String,
         dropdownPosition: Object,
-        appendToBody: Boolean
+        appendToBody: Boolean,
+        appendToDropdown: Object  // In case dropdown is in another dropdown // TODO test
     },
     mounted() {
-        // TODO close when focus is lost
-        // TODO calc position after window resize
         dropdown = document.getElementById(this.id);
         if (!dropdown) {
             throw new Error("Dropdown element with id " + this.id + " not found!");
@@ -44,11 +52,21 @@ export default Vue.extend({
         if (!this.dropdownPosition) {
             this.calcPosition();
         }
+
+        if (this.appendToDropdown) {
+            this.appendToDropdown.appendChild(dropdown);
+        }
+
+        document.addEventListener('click', this.checkFocus);
+        window.addEventListener('resize', this.calcPosition);
     },
     beforeDestroy() {
         if (this.appendToBody && dropdown) {
             document.body.removeChild(dropdown);
         }
+
+        document.removeEventListener('click', this.checkFocus);
+        window.removeEventListener('resize', this.calcPosition);
     },
     data() {
         return {
@@ -90,6 +108,18 @@ export default Vue.extend({
                 }
 
                 this.position = {top, left, bottom, right};
+            }
+        },
+        hasFocus() {
+            // Check if this element or any of its child elements has focus. If not - close dropdown.
+            const dropdown = document.getElementById(this.id);
+            if (dropdown) {
+                return recCheckFocus(dropdown);
+            }
+        },
+        checkFocus() {
+            if (!this.hasFocus()) {
+                this.toggle();
             }
         }
     }
