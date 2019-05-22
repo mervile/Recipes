@@ -87,6 +87,10 @@ export default Vue.extend({
     padding: 1em;
 }
 
+.modal .instructions {
+    white-space: pre-line;
+}
+
 .modal .ingredients ul {
     margin: 0 1em;
 }
