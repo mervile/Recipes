@@ -20,16 +20,6 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin(),
         new VueLoaderPlugin()
     ],
-    devtool: 'inline-source-map',
-    devServer: {
-        contentBase: './dist',
-        hot: true,
-        proxy: {
-            "/api/**": {
-                target: "http://[::1]:8000",
-            }
-        }
-    },
     module: {
         rules: [
             {
