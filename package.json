@@ -1,0 +1,14 @@
+{
+    "name": "recipes-app",
+    "version": "1.0.0",
+    "description": "",
+    "author": "",
+    "license": "ISC",
+    "engines": {
+        "node": "8.11.3"
+    },
+    "scripts": {
+        "start-server": "cd ./server && npm run-script start"
+    }
+}
+  
