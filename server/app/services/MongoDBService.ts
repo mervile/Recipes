@@ -38,7 +38,7 @@ export class MongoDBService extends DBService {
             console.log('Connecting to mongoDB...')
             try {
                 await this.client.connect();  
-                const db = this.client.db(this.name);
+                const db = this.client.db();
                 this.collection = db.collection('recipes');
                 // Create text index for search by text
                 this.collection.createIndex({ name: "text", instructions: "text"} )
