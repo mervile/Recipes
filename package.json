@@ -1,22 +1,51 @@
 {
-    "name": "recipes-app",
-    "version": "1.0.0",
-    "description": "",
-    "author": "",
-    "license": "ISC",
-    "engines": {
-        "node": "8.11.3"
-    },
-    "scripts": {
-        "start": "cd ./server && npm run-script start"
-    },
-    "dependencies": {
-        "@types/lodash": "^4.14.116",
-        "@types/mongodb": "^3.1.26",
-        "body-parser": "^1.18.3",
-        "express": "^4.16.3",
-        "lodash": "^4.17.10",
-        "mongodb": "^3.2.0"
-    }
+  "name": "recipes-app",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "cd server && ts-node app/server.ts",
+    "dev": "nodemon server.ts",
+    "build-client": "cd client && webpack --config webpack.prod.js",
+    "start-client": "cd client && webpack-dev-server --open --config webpack.dev.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/lodash": "^4.14.116",
+    "@types/mongodb": "^3.1.26",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "lodash": "^4.17.10",
+    "mongodb": "^3.2.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.1",
+    "@fortawesome/free-solid-svg-icons": "^5.1.1",
+    "@fortawesome/vue-fontawesome": "^0.1.1",
+    "axios": "^0.18.0",
+    "ol": "^5.1.3",
+    "vue": "^2.5.16",
+    "vue-i18n": "^8.0.0",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.16.0",
+    "nodemon": "^1.18.3",
+    "ts-node": "^7.0.0",
+    "typescript": "^3.0.1",
+    "@types/lodash": "^4.14.110",
+    "@types/node": "^10.5.3",
+    "clean-webpack-plugin": "^0.1.19",
+    "css-loader": "^0.28.11",
+    "file-loader": "^1.1.11",
+    "html-webpack-plugin": "^3.2.0",
+    "style-loader": "^0.21.0",
+    "ts-loader": "^4.4.2",
+    "tslint": "^5.11.0",
+    "vue-loader": "^15.2.6",
+    "vue-template-compiler": "^2.5.16",
+    "webpack": "^4.15.1",
+    "webpack-cli": "^3.0.8",
+    "webpack-dev-server": "^3.1.4",
+    "webpack-merge": "^4.2.1"
+  }
 }
-  
