@@ -21,7 +21,7 @@ export class MongoDBService extends DBService {
 
         this.name = 'myrecipes';
 
-        this.client = new MongoClient('mongodb://localhost:27017', { useNewUrlParser: true });
+        this.client = new MongoClient(process.env.MONGODB_URI || 'mongodb://localhost:27017', { useNewUrlParser: true });
     }
 
     static getInstance(): MongoDBService {
