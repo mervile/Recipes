@@ -19,7 +19,7 @@ export class MongoDBService extends DBService {
     private constructor() {
         super();
 
-        this.name = 'myrecipes';
+        this.name = process.env.MONGODB_URI ? '' : 'myrecipes';
 
         this.client = new MongoClient(process.env.MONGODB_URI || 'mongodb://localhost:27017', { useNewUrlParser: true });
     }
@@ -38,7 +38,7 @@ export class MongoDBService extends DBService {
             console.log('Connecting to mongoDB...')
             try {
                 await this.client.connect();  
-                const db = this.client.db();
+                const db = this.client.db(this.name);
                 this.collection = db.collection('recipes');
                 // Create text index for search by text
                 this.collection.createIndex({ name: "text", instructions: "text"} )
