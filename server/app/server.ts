@@ -1,11 +1,15 @@
 import * as express from 'express';
 import DBService from './services/AbstractDBService';
 import { MongoDBService } from './services/MongoDBService';
+const path = require('path');
 
 const dbClient: DBService = MongoDBService.getInstance();
 const app = express();
 
 app.use(express.json());
+
+const distDir = path.resolve(__dirname, "../../client/dist/");
+app.use(express.static(distDir));
 
 const port = process.env.PORT || 8000;
 
