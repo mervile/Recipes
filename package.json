@@ -18,7 +18,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.1",
     "@fortawesome/free-solid-svg-icons": "^5.1.1",
     "@fortawesome/vue-fontawesome": "^0.1.1",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "ol": "^5.1.3",
     "vue": "^2.5.16",
     "vue-i18n": "^8.0.0",
